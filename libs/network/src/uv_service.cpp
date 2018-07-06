@@ -1,19 +1,17 @@
 #include "uv_service.h"
-namespace uv
-{
-	
+
+namespace network {
 
 	uv_service::uv_service(uv_service_handler* handler) :
 		m_handler(handler),
 		m_loop(uv_default_loop()),
 		m_sessions(),
-		m_tcp(this),
-		m_udp(this),
 		m_error(),
 		m_shutdown(false),
 		m_init(false)
 	{
-		m_handler->m_service =this;
+		
+		m_handler->m_service = this;
 	}
 
 	uv_service::~uv_service()
@@ -22,6 +20,14 @@ namespace uv
 		m_handler = NULL;
 		m_shutdown = true;
 		m_init = false;
+
+		m_tcp->close();
+		m_udp->close();
+
+		delete m_tcp;
+		delete m_udp;
+		m_tcp = NULL;
+		m_udp = NULL;
 	}
 
 	bool uv_service::initialize(const char* ip, const int tcp_port, const int udp_port, bool ipv6)
@@ -30,14 +36,17 @@ namespace uv
 		{
 			return true;
 		}
-		if (m_tcp.initialize(ip, tcp_port, ipv6) == false)
+		if (m_tcp->initialize(ip, tcp_port, ipv6) == false)
 		{
 			return false;
 		}
-		if (m_udp.initialize(ip, udp_port, ipv6) == false)
+		if (m_udp->initialize(ip, udp_port, ipv6) == false)
 		{
 			return false;
 		}
+
+		m_tcp = new uv_tcp_server(this);
+		m_udp = new uv_udp_server(this);
 
 		m_init = true;
 
@@ -102,7 +111,7 @@ namespace uv
 		}
 		else
 		{
-			
+
 		}
 
 		if (m_handler != NULL)

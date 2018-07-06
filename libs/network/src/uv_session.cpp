@@ -1,7 +1,7 @@
 #include "uv_session.h"
 #include "uv_net.h"
-namespace uv
-{
+namespace network {
+
 	uv_session::uv_session(int id) :
 		m_id(id)
 	{

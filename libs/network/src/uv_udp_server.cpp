@@ -1,8 +1,8 @@
 #include "uv_udp_server.h"
 
-namespace uv
-{
-	uv_udp_server::uv_udp_server(uv_service* service):
+namespace network {
+
+	uv_udp_server::uv_udp_server(uv_service* service) :
 		m_service(service),
 		m_handle(),
 		m_sendreq(),
@@ -207,12 +207,12 @@ namespace uv
 		}
 
 		uv_udp_server* server = (uv_udp_server*)handle->data;
-	
+
 		if (nread > 0)
 		{
 			server->service()->on_udp_receive((struct sockaddr_in*)addr, buf->base, buf->len);
 		}
-		else if(nread == 0)
+		else if (nread == 0)
 		{
 
 		}
@@ -239,5 +239,4 @@ namespace uv
 			free(handle);
 		}
 	}
-
-} //namespace uv
+}

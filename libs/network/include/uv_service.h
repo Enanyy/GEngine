@@ -10,8 +10,12 @@
 #include "uv_udp_server.h"
 #include "uv_service_handler.h"
 
-namespace uv
-{
+namespace network {
+
+	class uv_service_handler;
+	class uv_session;
+	class uv_tcp_server;
+	class uv_udp_server;
 	class uv_service
 	{
 	public:
@@ -37,16 +41,16 @@ namespace uv
 		uv_loop_t* loop() const { return m_loop; }
 		uv_service_handler* handler() const { return m_handler; }
 
-		uv_tcp_server* tcp() { return &m_tcp; }
-		uv_udp_server* udp() { return &m_udp; }
-	
+		uv_tcp_server* tcp() { return m_tcp; }
+		uv_udp_server* udp() { return m_udp; }
+
 	private:
 
 	private:
 		uv_service_handler*				m_handler;
 		uv_loop_t*						m_loop;
-		uv_tcp_server					m_tcp;
-		uv_udp_server					m_udp;
+		uv_tcp_server*					m_tcp;
+		uv_udp_server*					m_udp;
 		std::map<int, uv_session*>		m_sessions;
 		std::string						m_error;
 		bool							m_shutdown;

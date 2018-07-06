@@ -1,7 +1,7 @@
 #include "uv_tcp_server.h"
 
-namespace uv
-{
+namespace network {
+
 	uv_tcp_server::uv_tcp_server(uv_service* service) :
 		m_service(service),
 		m_init(false),
@@ -82,11 +82,11 @@ namespace uv
 			buffer.base = (char*)realloc(buffer.base, length);
 			buffer.len = length;
 		}
-		
+
 		memset(buffer.base, 0, buffer.len);
 		memcpy(buffer.base, data, length);
 		buffer.len = length;
-		
+
 		int r = uv_write(&session->tcp_write(), (uv_stream_t*)session->tcp(), &buffer, 1, on_send);
 
 		ASSERT(r == 0);
@@ -146,13 +146,13 @@ namespace uv
 		return r;
 	}
 
-	int uv_tcp_server::listen(int backlog )
+	int uv_tcp_server::listen(int backlog)
 	{
 		int r = uv_listen((uv_stream_t*)&m_handle, backlog, on_accept);
 		return r;
 	}
 
-	
+
 	void  uv_tcp_server::on_accept(uv_stream_t* handle, int status)
 	{
 		if (status != 0)
@@ -195,7 +195,7 @@ namespace uv
 
 		r = uv_accept((uv_stream_t*)&server->m_handle, (uv_stream_t*)session->tcp());
 		if (r != 0)
-		{	
+		{
 			uv_close((uv_handle_t*)session->tcp(), NULL);
 
 			delete session;
@@ -208,9 +208,9 @@ namespace uv
 		server->service()->on_newsession(session);
 
 		r = uv_read_start((uv_stream_t*)session->tcp(), on_alloc_buffer, on_receive);
-		
+
 		ASSERT(r == 0);
-		
+
 	}
 	void  uv_tcp_server::on_receive(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf)
 	{
@@ -219,7 +219,7 @@ namespace uv
 			return;
 		}
 
-		uv_session* session =(uv_session*)handle->data;
+		uv_session* session = (uv_session*)handle->data;
 
 		if (session == NULL || session->service() == NULL)
 		{
@@ -231,7 +231,7 @@ namespace uv
 		{
 			service->on_tcp_receive(session, buf->base, buf->len);
 		}
-		else if(nread == 0)
+		else if (nread == 0)
 		{
 			/* Everything OK, but nothing read. */
 		}
@@ -270,6 +270,6 @@ namespace uv
 	void  uv_tcp_server::on_close(uv_handle_t* handle)
 	{
 		free(handle);
-		
+
 	}
 }

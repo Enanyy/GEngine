@@ -2,9 +2,10 @@
 #define _UV_SERVICE_HANDLER_H_
 #include "uv_service.h"
 #include "uv_session.h"
+namespace network {
 
-namespace uv
-{
+	class uv_service;
+	class uv_session;
 	class uv_service_handler
 	{
 		friend class uv_service;
@@ -23,10 +24,10 @@ namespace uv
 		uv_service* m_service;
 	};
 
-	
+
+
+
+
+
 }
-
-
-
-
 #endif //_UV_SERVICE_HANDLER_H_
