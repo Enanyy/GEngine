@@ -20,6 +20,7 @@ namespace uv
 		m_shutdown(false),
 		m_init(false)
 	{
+		m_handler->m_service =this;
 	}
 
 	uv_service::~uv_service()

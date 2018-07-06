@@ -12,6 +12,8 @@
 
 namespace uv
 {
+	class uv_service;
+
 	class uv_service_handler
 	{
 		friend class uv_service;
@@ -19,12 +21,15 @@ namespace uv
 		uv_service_handler();
 		virtual ~uv_service_handler();
 
+		const uv_service* service() const { return m_service; }
+
 	protected:
 		virtual void on_newsession(uv_session* session) = 0;
 		virtual void on_receive(uv_session* session, char* data, size_t length) = 0;
 		virtual void on_receive(sockaddr_in* addr, char* data, size_t length) = 0;
-
-
+		
+	private:
+		uv_service* m_service;
 	};
 
 	

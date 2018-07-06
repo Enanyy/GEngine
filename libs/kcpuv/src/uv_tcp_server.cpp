@@ -28,14 +28,14 @@ namespace uv
 		int r = uv_tcp_init(m_service->loop(), &m_handle);
 		if (r != 0)
 		{
-			ASSERT(r != 0);
+			ASSERT(r == 0);
 			return false;
 		}
 
 		r = m_ipv6 ? bind_ipv6(ip, port) : bind_ipv4(ip, port);
 		if (r != 0)
 		{
-			ASSERT(r != 0);
+			ASSERT(r == 0);
 			return false;
 		}
 
@@ -81,7 +81,7 @@ namespace uv
 		
 		int r = uv_write(&session->tcp_write(), (uv_stream_t*)session->tcp(), &buffer, 1, on_send);
 
-		ASSERT(r != 0);
+		ASSERT(r == 0);
 	}
 
 	bool uv_tcp_server::no_delay(bool enable)
@@ -89,7 +89,7 @@ namespace uv
 		int r = uv_tcp_nodelay(&m_handle, enable ? 1 : 0);
 		if (r != 0)
 		{
-			ASSERT(r != 0);
+			ASSERT(r == 0);
 			return false;
 		}
 		return true;
@@ -100,7 +100,7 @@ namespace uv
 		int r = uv_tcp_keepalive(&m_handle, enable, delay);
 		if (r != 0)
 		{
-			ASSERT(r != 0);
+			ASSERT(r == 0);
 			return false;
 		}
 		return true;
@@ -149,7 +149,7 @@ namespace uv
 	{
 		if (status != 0)
 		{
-			ASSERT(status != 0);
+			ASSERT(status == 0);
 			return;
 		}
 		if (handle == nullptr)
@@ -181,7 +181,7 @@ namespace uv
 		if (r != 0)
 		{
 			delete session;
-			ASSERT(r != 0);
+			ASSERT(r == 0);
 			return;
 		}
 
@@ -201,7 +201,7 @@ namespace uv
 
 		r = uv_read_start((uv_stream_t*)session->tcp(), on_alloc_buffer, on_receive);
 		
-		ASSERT(r != 0);
+		ASSERT(r == 0);
 		
 	}
 	void  uv_tcp_server::on_receive(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf)
@@ -238,7 +238,7 @@ namespace uv
 			}
 			else
 			{
-				ASSERT(nread < 0);
+				ASSERT(nread >= 0);
 			}
 			service->close(session->id());
 		}
