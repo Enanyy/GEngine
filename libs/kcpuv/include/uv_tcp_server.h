@@ -1,6 +1,6 @@
 #pragma once
-#ifndef UV_TCP_SERVER_H_
-#define UV_TCP_SERVER_H_
+#ifndef _UV_TCP_SERVER_H_
+#define _UV_TCP_SERVER_H_
 
 #include <map>
 #include <string>
@@ -11,6 +11,9 @@
 
 namespace uv
 {
+	class uv_service;
+	class uv_session;
+
 	class uv_tcp_server
 	{
 	
@@ -53,4 +56,4 @@ namespace uv
 
 }
 
-#endif // !UV_TCP_SERVER_H_
+#endif // !_UV_UDP_SERVER_H_

@@ -1,4 +1,4 @@
-h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\vc140.pdb
+h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\libprotobuf.pdb
 h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\message_lite.obj
 h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\message.obj
 h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\zero_copy_stream_impl_lite.obj
@@ -33,7 +33,6 @@ h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\atomicops_internals
 h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\service.obj
 h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\repeated_field.obj
 h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\reflection_ops.obj
-h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\libprotobuf.pdb
 h:\workspace\gengine\x64\debug\lib\libprotobuf.lib
 h:\workspace\gengine\x64\debug\libprotobuf.pdb
 h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\libprotobuf.tlog\cl.command.1.tlog
@@ -42,6 +41,3 @@ h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\libprotobuf.tlog\cl
 h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\libprotobuf.tlog\lib-link.read.1.tlog
 h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\libprotobuf.tlog\lib-link.write.1.tlog
 h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\libprotobuf.tlog\lib.command.1.tlog
-h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\libprotobuf.tlog\link.command.1.tlog
-h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\libprotobuf.tlog\link.read.1.tlog
-h:\workspace\gengine\3rd\protobuf-2.6.1\vsprojects\x64\debug\libprotobuf.tlog\link.write.1.tlog

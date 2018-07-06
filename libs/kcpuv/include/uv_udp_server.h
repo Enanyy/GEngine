@@ -1,6 +1,6 @@
 #pragma once
-#ifndef UV_UDP_CLIENT_H_
-#define UV_UDP_CLIENT_H_
+#ifndef _UV_UDP_SERVER_H_
+#define _UV_UDP_SERVER_H_
 #include <string>
 #include <assert.h>
 #include "uv_service.h"
@@ -8,6 +8,8 @@
 
 namespace uv
 {
+	class uv_service;
+
 	class uv_udp_server
 	{
 		
@@ -63,4 +65,4 @@ namespace uv
 }
 
 
-#endif // !UV_UDP_CLIENT_H_
+#endif // !_UV_UDP_SERVER_H_

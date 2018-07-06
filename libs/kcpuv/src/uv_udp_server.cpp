@@ -1,4 +1,5 @@
 #include "uv_udp_server.h"
+#include "uv_net.h"
 
 namespace uv
 {
@@ -28,7 +29,7 @@ namespace uv
 		m_readbuf.len = 0;
 	}
 
-	bool uv_udp_server::initialize(const char* ip, const int port, bool ipv6 = false)
+	bool uv_udp_server::initialize(const char* ip, const int port, bool ipv6)
 	{
 		if (m_init)
 		{
@@ -210,7 +211,7 @@ namespace uv
 	
 		if (nread > 0)
 		{
-			server->service()->on_receive((struct sockaddr_in*)addr, buf->base, buf->len);
+			server->service()->on_udp_receive((struct sockaddr_in*)addr, buf->base, buf->len);
 		}
 		else if(nread == 0)
 		{

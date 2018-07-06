@@ -1,6 +1,6 @@
 #pragma once
 #ifndef _UV_SESSION_H_
-
+#define _UV_SESSION_H_
 #include "uv_service.h"
 namespace uv
 {

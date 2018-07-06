@@ -1,6 +1,6 @@
 #pragma once
-#ifndef UV_NET_H_
-#define UV_NET_H_
+#ifndef _UV_NET_H_
+#define _UV_NET_H_
 
 #include <stdint.h>
 #if defined(WIN32) || defined(_WIN32)|| defined(_WIN64) 
@@ -62,4 +62,4 @@ inline bool little_endian()
             __LINE__,                                     \
             #expr);                                                                                 \
  } 		
-#endif // !UV_NET_H_
+#endif // !_UV_NET_H_

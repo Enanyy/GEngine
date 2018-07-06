@@ -1,0 +1,10 @@
+﻿  uv_service.cpp
+  uv_session.cpp
+  uv_tcp_server.cpp
+h:\workspace\gengine\libs\kcpuv\include\uv_service.h(72): error C2079: “uv::uv_service::m_tcp”使用未定义的 class“uv::uv_tcp_server”
+src\uv_tcp_server.cpp(75): warning C4267: “=”: 从“size_t”转换到“ULONG”，可能丢失数据
+src\uv_tcp_server.cpp(80): warning C4267: “=”: 从“size_t”转换到“ULONG”，可能丢失数据
+  uv_udp_server.cpp
+src\uv_udp_server.cpp(122): warning C4267: “=”: 从“size_t”转换到“ULONG”，可能丢失数据
+src\uv_udp_server.cpp(130): warning C4267: “=”: 从“size_t”转换到“ULONG”，可能丢失数据
+src\uv_udp_server.cpp(231): warning C4244: “参数”: 从“ssize_t”转换到“int”，可能丢失数据

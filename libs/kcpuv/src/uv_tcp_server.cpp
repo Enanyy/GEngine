@@ -12,7 +12,7 @@ namespace uv
 
 	}
 
-	bool uv_tcp_server::initialize(const char* ip, const int port, bool ipv6 = false)
+	bool uv_tcp_server::initialize(const char* ip, const int port, bool ipv6)
 	{
 		if (m_init)
 		{
@@ -221,7 +221,7 @@ namespace uv
 
 		if (nread > 0)
 		{
-			service->on_receive(session, buf->base, buf->len);
+			service->on_tcp_receive(session, buf->base, buf->len);
 		}
 		else if(nread == 0)
 		{

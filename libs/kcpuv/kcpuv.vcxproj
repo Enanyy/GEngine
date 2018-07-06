@@ -22,14 +22,12 @@
     <ClInclude Include="include\uv_net.h" />
     <ClInclude Include="include\uv_service.h" />
     <ClInclude Include="include\uv_session.h" />
-    <ClInclude Include="include\uv_tcp_client.h" />
     <ClInclude Include="include\uv_tcp_server.h" />
     <ClInclude Include="include\uv_udp_server.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\uv_service.cpp" />
     <ClCompile Include="src\uv_session.cpp" />
-    <ClCompile Include="src\uv_tcp_client.cpp" />
     <ClCompile Include="src\uv_tcp_server.cpp" />
     <ClCompile Include="src\uv_udp_server.cpp" />
   </ItemGroup>
@@ -87,10 +85,19 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\lib;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -109,6 +116,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>src;include;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;_WIN32_WINNT=0x0600;_GNU_SOURCE;DEBUG;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Lib>
       <OutputFile>$(OutDir)lib\$(TargetName)$(TargetExt)</OutputFile>

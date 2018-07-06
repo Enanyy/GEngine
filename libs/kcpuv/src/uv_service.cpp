@@ -7,6 +7,7 @@ namespace uv
 
 	uv_service_handler::~uv_service_handler()
 	{
+		m_service = NULL;
 	}
 
 
@@ -31,7 +32,7 @@ namespace uv
 		m_init = false;
 	}
 
-	bool uv_service::initialize(const char* ip, const int tcp_port, const int udp_port, bool ipv6 = false)
+	bool uv_service::initialize(const char* ip, const int tcp_port, const int udp_port, bool ipv6)
 	{
 		if (m_init)
 		{
@@ -118,19 +119,19 @@ namespace uv
 		}
 	}
 
-	void uv_service::on_receive(uv_session* session, char* data, size_t length)
+	void uv_service::on_tcp_receive(uv_session* session, char* data, size_t length)
 	{
 		if (m_handler)
 		{
-			m_handler->on_receive(session, data, length);
+			m_handler->on_tcp_receive(session, data, length);
 		}
 	}
 
-	void uv_service::on_receive(sockaddr_in* addr, char* data, size_t length)
+	void uv_service::on_udp_receive(sockaddr_in* addr, char* data, size_t length)
 	{
 		if (m_handler)
 		{
-			m_handler->on_receive(addr, data, length);
+			m_handler->on_udp_receive(addr, data, length);
 		}
 	}
 
