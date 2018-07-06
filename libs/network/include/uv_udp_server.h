@@ -1,15 +1,13 @@
-#pragma once
 #ifndef _UV_UDP_SERVER_H_
 #define _UV_UDP_SERVER_H_
 #include <string>
 #include <assert.h>
 #include "uv_service.h"
+#include "uv_session.h"
 #include "uv_net.h"
 
 namespace uv
 {
-	class uv_service;
-
 	class uv_udp_server
 	{
 		

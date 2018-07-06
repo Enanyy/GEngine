@@ -1,5 +1,4 @@
 #include "uv_udp_server.h"
-#include "uv_net.h"
 
 namespace uv
 {

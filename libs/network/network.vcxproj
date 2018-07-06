@@ -18,24 +18,10 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\uv_net.h" />
-    <ClInclude Include="include\uv_service.h" />
-    <ClInclude Include="include\uv_session.h" />
-    <ClInclude Include="include\uv_tcp_server.h" />
-    <ClInclude Include="include\uv_udp_server.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\uv_service.cpp" />
-    <ClCompile Include="src\uv_session.cpp" />
-    <ClCompile Include="src\uv_tcp_server.cpp" />
-    <ClCompile Include="src\uv_udp_server.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{D60D9611-A7AC-4EAC-A5EE-C429610F6CC8}</ProjectGuid>
-    <RootNamespace>kcpuv</RootNamespace>
+    <ProjectGuid>{13CC6679-5C08-458D-AE11-EF059477986D}</ProjectGuid>
+    <RootNamespace>network</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
-    <ProjectName>libkcpuv</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -82,12 +68,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\lib;$(LibraryPath)</LibraryPath>
@@ -97,15 +83,17 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\lib;$(LibraryPath)</LibraryPath>
-    <SourcePath>$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>src;include;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;src;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
     <Lib>
       <OutputFile>$(OutDir)lib\$(TargetName)$(TargetExt)</OutputFile>
     </Lib>
@@ -115,9 +103,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>src;include;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;_WIN32_WINNT=0x0600;_GNU_SOURCE;DEBUG;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;src;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
     <Lib>
       <OutputFile>$(OutDir)lib\$(TargetName)$(TargetExt)</OutputFile>
     </Lib>
@@ -129,9 +119,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>src;include;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;src;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
@@ -146,9 +137,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>src;include;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;src;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
@@ -156,6 +148,20 @@
       <OutputFile>$(OutDir)lib\$(TargetName)$(TargetExt)</OutputFile>
     </Lib>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\uv_net.h" />
+    <ClInclude Include="include\uv_service.h" />
+    <ClInclude Include="include\uv_service_handler.h" />
+    <ClInclude Include="include\uv_session.h" />
+    <ClInclude Include="include\uv_tcp_server.h" />
+    <ClInclude Include="include\uv_udp_server.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\uv_service.cpp" />
+    <ClCompile Include="src\uv_session.cpp" />
+    <ClCompile Include="src\uv_tcp_server.cpp" />
+    <ClCompile Include="src\uv_udp_server.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

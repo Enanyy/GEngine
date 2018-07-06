@@ -1,5 +1,4 @@
 #include "uv_tcp_server.h"
-#include "uv_net.h"
 
 namespace uv
 {
@@ -9,6 +8,15 @@ namespace uv
 		m_ipv6(false),
 		m_handle()
 	{
+
+	}
+
+	uv_tcp_server::~uv_tcp_server()
+	{
+		m_init = false;
+		m_ipv6 = false;
+		m_service = NULL;
+		uv_close((uv_handle_t*)&m_handle, NULL);
 
 	}
 
@@ -244,10 +252,12 @@ namespace uv
 		}
 
 	}
+
 	void  uv_tcp_server::on_send(uv_write_t* req, int status)
 	{
 		ASSERT(status != 0);
 	}
+
 	void  uv_tcp_server::on_alloc_buffer(uv_handle_t* hanle, size_t suggested_size, uv_buf_t* buf)
 	{
 		assert(hanle->data != NULL);
@@ -256,6 +266,7 @@ namespace uv
 
 		*buf = session->tcp_readbuf();
 	}
+
 	void  uv_tcp_server::on_close(uv_handle_t* handle)
 	{
 		free(handle);

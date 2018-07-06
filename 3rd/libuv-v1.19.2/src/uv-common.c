@@ -32,18 +32,6 @@
 
 #if defined(_WIN32)
 # include <malloc.h> /* malloc */
-
-#pragma comment(lib,"ws2_32.lib")
-#pragma comment(lib, "IPHLPAPI.lib")
-#pragma comment(lib, "Psapi.lib")
-#pragma comment(lib, "Userenv.lib")
-#pragma comment(lib, "kernel32.lib")
-#pragma comment(lib, "user32.lib")
-#pragma comment(lib, "gdi32.lib")
-#pragma comment(lib, "winspool.lib")
-#pragma comment(lib, "comdlg32.lib")
-#pragma comment(lib, "advapi32.lib")
-
 #else
 # include <net/if.h> /* if_nametoindex */
 #endif

@@ -15,13 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\uv_net.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="include\uv_service.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\uv_session.h">
+    <ClInclude Include="include\uv_service_handler.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\uv_net.h">
+    <ClInclude Include="include\uv_session.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\uv_tcp_server.h">

@@ -1,15 +1,7 @@
 #include "uv_service.h"
 namespace uv
 {
-	uv_service_handler::uv_service_handler()
-	{
-	}
-
-	uv_service_handler::~uv_service_handler()
-	{
-		m_service = NULL;
-	}
-
+	
 
 	uv_service::uv_service(uv_service_handler* handler) :
 		m_handler(handler),

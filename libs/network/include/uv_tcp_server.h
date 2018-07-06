@@ -1,4 +1,3 @@
-#pragma once
 #ifndef _UV_TCP_SERVER_H_
 #define _UV_TCP_SERVER_H_
 
@@ -7,13 +6,12 @@
 #include <memory>
 #include <assert.h>
 #include "uv.h"
+#include "uv_net.h"
 #include "uv_service.h"
+#include "uv_session.h"
 
 namespace uv
 {
-	class uv_service;
-	class uv_session;
-
 	class uv_tcp_server
 	{
 	

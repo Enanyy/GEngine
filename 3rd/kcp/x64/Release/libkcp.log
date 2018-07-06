@@ -1,5 +1,0 @@
-﻿  ikcp.c
-src\ikcp.c(508): warning C4018: “>=”: 有符号/无符号不匹配
-src\ikcp.c(657): warning C4267: “=”: 从“size_t”转换到“IUINT32”，可能丢失数据
-C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(1357,5): warning MSB8012: TargetPath(H:\WorkSpace\GEngine\x64\Release\libkcp.lib) does not match the Library's OutputFile property value (H:\WorkSpace\GEngine\x64\Release\lib\libkcp.lib). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
-  libkcp.vcxproj -> H:\WorkSpace\GEngine\x64\Release\libkcp.lib

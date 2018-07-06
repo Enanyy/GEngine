@@ -8,6 +8,7 @@ $1/build/tools/make-standalone-toolchain.sh \
     --arch=arm \
     --install-dir=$TOOLCHAIN \
     --platform=android-$API \
+    --force
 export PATH=$TOOLCHAIN/bin:$PATH
 export AR=arm-linux-androideabi-ar
 export CC=arm-linux-androideabi-gcc

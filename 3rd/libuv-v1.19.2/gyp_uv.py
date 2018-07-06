@@ -47,7 +47,7 @@ if __name__ == '__main__':
   args.append('--depth=' + uv_root)
 
   # There's a bug with windows which doesn't allow this feature.
-  if sys.platform == 'win32':
+  if sys.platform != 'win32':
     if '-f' not in args:
       args.extend('-f make'.split())
     if 'eclipse' not in args and 'ninja' not in args:

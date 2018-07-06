@@ -1,41 +1,17 @@
-#pragma once
 #ifndef _UV_SERVICE_H_
 #define _UV_SERVICE_H_
 #include <map>
 #include <string>
 
 #include "uv.h"
-#include "ikcp.h"
+//#include "ikcp.h"
 #include "uv_session.h"
 #include "uv_tcp_server.h"
 #include "uv_udp_server.h"
+#include "uv_service_handler.h"
 
 namespace uv
 {
-	class uv_service;
-	class uv_session;
-	class uv_tcp_server;
-	class uv_udp_server;
-
-	class uv_service_handler
-	{
-		friend class uv_service;
-	public:
-		uv_service_handler();
-		virtual ~uv_service_handler();
-
-		uv_service* service() const { return m_service; }
-
-	protected:
-		virtual void on_newsession(uv_session* session) = 0;
-		virtual void on_tcp_receive(uv_session* session, char* data, size_t length) = 0;
-		virtual void on_udp_receive(sockaddr_in* addr, char* data, size_t length) = 0;
-		
-	private:
-		uv_service* m_service;
-	};
-
-	
 	class uv_service
 	{
 	public:
