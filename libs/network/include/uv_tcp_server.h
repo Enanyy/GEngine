@@ -1,3 +1,4 @@
+#pragma once
 #ifndef _UV_TCP_SERVER_H_
 #define _UV_TCP_SERVER_H_
 

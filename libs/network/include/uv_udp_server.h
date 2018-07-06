@@ -1,3 +1,4 @@
+#pragma once
 #ifndef _UV_UDP_SERVER_H_
 #define _UV_UDP_SERVER_H_
 #include <string>

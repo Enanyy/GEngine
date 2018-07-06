@@ -66,6 +66,8 @@ namespace network {
 
 
 		m_init = true;
+
+		return true;
 	}
 
 	bool uv_udp_server::set_broadcast(bool enable)

@@ -1,10 +1,11 @@
+#pragma once
 #ifndef _UV_SERVICE_H_
 #define _UV_SERVICE_H_
 #include <map>
 #include <string>
 
 #include "uv.h"
-//#include "ikcp.h"
+#include "ikcp.h"
 #include "uv_session.h"
 #include "uv_tcp_server.h"
 #include "uv_udp_server.h"

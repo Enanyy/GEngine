@@ -1,3 +1,4 @@
+#pragma once
 #ifndef _UV_SERVICE_HANDLER_H_
 #define _UV_SERVICE_HANDLER_H_
 #include "uv_service.h"
