@@ -12,7 +12,7 @@ namespace uv
 
 	}
 
-	bool uv_tcp_server::initialize(const char* ip, const unsigned port, bool ipv6 = false)
+	bool uv_tcp_server::initialize(const char* ip, const int port, bool ipv6 = false)
 	{
 		if (m_init)
 		{
@@ -106,7 +106,7 @@ namespace uv
 		return true;
 	}
 
-	int uv_tcp_server::bind_ipv4(const char* ip, const unsigned port)
+	int uv_tcp_server::bind_ipv4(const char* ip, const int port)
 	{
 		struct sockaddr_in addr;
 		int r = uv_ip4_addr(ip, port, &addr);
@@ -121,7 +121,7 @@ namespace uv
 		}
 		return r;
 	}
-	int uv_tcp_server::bind_ipv6(const char* ip, const unsigned port)
+	int uv_tcp_server::bind_ipv6(const char* ip, const int port)
 	{
 		struct sockaddr_in6 addr;
 		int r = uv_ip6_addr(ip, port, &addr);
@@ -189,7 +189,6 @@ namespace uv
 		if (r != 0)
 		{	
 			uv_close((uv_handle_t*)session->tcp(), NULL);
-			uv_close((uv_handle_t*)session->udp(), NULL);
 
 			delete session;
 
@@ -198,7 +197,7 @@ namespace uv
 			return;
 		}
 
-		server->service()->on_connect(session);
+		server->service()->on_newsession(session);
 
 		r = uv_read_start((uv_stream_t*)session->tcp(), on_alloc_buffer, on_receive);
 		
@@ -222,7 +221,7 @@ namespace uv
 
 		if (nread > 0)
 		{
-			service->handler()->on_receive(session, buf->base, buf->len);
+			service->on_receive(session, buf->base, buf->len);
 		}
 		else if(nread == 0)
 		{

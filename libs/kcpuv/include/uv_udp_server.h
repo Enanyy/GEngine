@@ -15,11 +15,11 @@ namespace uv
 		uv_udp_server(uv_service* service);
 		virtual ~uv_udp_server();
 	
-		bool initialize(const char* ip, const unsigned port, bool ipv6 = false);
+		bool initialize(const char* ip, const int port, bool ipv6 = false);
 
 		void close();
 
-		void send(const char* ip, const unsigned port, const char* data, const size_t length);
+		void send(const char* ip, const int port, const char* data, const size_t length);
 		
 		void send(const sockaddr* addr, const char* data, const size_t length);
 	
@@ -34,8 +34,8 @@ namespace uv
 
 	protected:
 
-		int bind_ipv4(const char* ip, const unsigned port);
-		int bind_ipv6(const char* ip, const unsigned port);
+		int bind_ipv4(const char* ip, const int port);
+		int bind_ipv6(const char* ip, const int port);
 		int listen();
 	
 	

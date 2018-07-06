@@ -14,8 +14,11 @@ namespace uv
 		m_handler(handler),
 		m_loop(uv_default_loop()),
 		m_sessions(),
+		m_tcp(this),
+		m_udp(this),
 		m_error(),
-		m_shutdown(false)
+		m_shutdown(false),
+		m_init(false)
 	{
 	}
 
@@ -23,7 +26,28 @@ namespace uv
 	{
 		uv_loop_close(m_loop);
 		m_handler = NULL;
-		
+		m_shutdown = true;
+		m_init = false;
+	}
+
+	bool uv_service::initialize(const char* ip, const int tcp_port, const int udp_port, bool ipv6 = false)
+	{
+		if (m_init)
+		{
+			return true;
+		}
+		if (m_tcp.initialize(ip, tcp_port, ipv6) == false)
+		{
+			return false;
+		}
+		if (m_udp.initialize(ip, udp_port, ipv6) == false)
+		{
+			return false;
+		}
+
+		m_init = true;
+
+		return true;
 	}
 
 	void uv_service::shutdown()
@@ -71,18 +95,41 @@ namespace uv
 		return NULL;
 	}
 
-	void uv_service::on_connect(uv_session* session)
+	void uv_service::on_newsession(uv_session* session)
 	{
 		if (session == NULL)
 		{
 			return;
 		}
 
-		m_sessions.insert(std::make_pair(session->id(), session));
+		if (m_sessions.find(session->id()) == m_sessions.end())
+		{
+			m_sessions.insert(std::make_pair(session->id(), session));
+		}
+		else
+		{
+			
+		}
 
 		if (m_handler != NULL)
 		{
-			m_handler->on_connect(session);
+			m_handler->on_newsession(session);
+		}
+	}
+
+	void uv_service::on_receive(uv_session* session, char* data, size_t length)
+	{
+		if (m_handler)
+		{
+			m_handler->on_receive(session, data, length);
+		}
+	}
+
+	void uv_service::on_receive(sockaddr_in* addr, char* data, size_t length)
+	{
+		if (m_handler)
+		{
+			m_handler->on_receive(addr, data, length);
 		}
 	}
 
