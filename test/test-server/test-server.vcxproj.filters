@@ -15,21 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\serverapp.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\gmain.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\nocopyable.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\singleton.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\serverapp.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

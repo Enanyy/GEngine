@@ -20,3 +20,13 @@ void serverapp::on_udp_receive(sockaddr_in* addr, char* data, size_t length)
 {
 
 }
+
+bool serverapp::initialize()
+{
+
+	return true;
+}
+void serverapp::shutdown()
+{
+
+}

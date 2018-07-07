@@ -36,6 +36,11 @@ namespace network {
 		{
 			return true;
 		}
+
+		m_tcp = new uv_tcp_server(this);
+		m_udp = new uv_udp_server(this);
+
+
 		if (m_tcp->initialize(ip, tcp_port, ipv6) == false)
 		{
 			return false;
@@ -45,9 +50,7 @@ namespace network {
 			return false;
 		}
 
-		m_tcp = new uv_tcp_server(this);
-		m_udp = new uv_udp_server(this);
-
+		
 		m_init = true;
 
 		return true;

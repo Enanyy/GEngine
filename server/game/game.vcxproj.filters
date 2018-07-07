@@ -14,23 +14,4 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\serverapp.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\gmain.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\nocopyable.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\singleton.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\serverapp.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-  </ItemGroup>
 </Project>

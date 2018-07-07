@@ -144,17 +144,17 @@ namespace network {
 		if (r != 0)
 		{
 			ASSERT(r == 0);
-			return false;
+			return r;
 		}
 
 		r = uv_udp_bind(&m_handle, (const sockaddr*)&addr, 0);
 		if (r != 0)
 		{
 			ASSERT(r == 0);
-			return false;
+			return r;
 		}
 
-		return true;
+		return r;
 	}
 	int uv_udp_server::bind_ipv6(const char* ip, const int port)
 	{
@@ -163,17 +163,17 @@ namespace network {
 		if (r != 0)
 		{
 			ASSERT(r == 0);
-			return false;
+			return r;
 		}
 
 		r = uv_udp_bind(&m_handle, (const sockaddr*)&addr, 0);
 		if (r != 0)
 		{
 			ASSERT(r == 0);
-			return false;
+			return r;
 		}
 
-		return true;
+		return r;
 	}
 
 	int uv_udp_server::listen()
@@ -183,9 +183,9 @@ namespace network {
 		{
 			ASSERT(r == 0);
 
-			return false;
+			return r;
 		}
-		return true;
+		return r;
 	}
 
 	void uv_udp_server::on_alloc_buffer(uv_handle_t* handle, size_t suggested_size, uv_buf_t* buf)
