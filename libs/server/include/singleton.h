@@ -11,12 +11,10 @@ class singleton
         {
            if(m_instance == NULL)
            {
-               uv_mutex_lock(&m_lock);
                if(m_instance == NULL)
                {
 				   m_instance = new T;
                }
-               uv_mutex_unlock(&m_lock);
            }
            return m_instance;
         }
@@ -31,8 +29,8 @@ class singleton
 			
         }
     protected:
-		singleton(){ uv_mutex_init(&m_lock); }
-        virtual ~singleton(){ uv_mutex_destroy(&m_lock);}
+		singleton(){  }
+        virtual ~singleton(){ }
 
 		singleton(const singleton&){}
 		singleton operator=(const singleton&){}

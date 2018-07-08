@@ -27,9 +27,24 @@
     <ClInclude Include="include\singleton.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\memorystream.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\packet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\networkinterface.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\eventinterface.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\serverapp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\packet.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -145,12 +145,17 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\eventinterface.h" />
     <ClInclude Include="include\gmain.h" />
+    <ClInclude Include="include\memorystream.h" />
+    <ClInclude Include="include\networkinterface.h" />
     <ClInclude Include="include\nocopyable.h" />
+    <ClInclude Include="include\packet.h" />
     <ClInclude Include="include\serverapp.h" />
     <ClInclude Include="include\singleton.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\packet.cpp" />
     <ClCompile Include="src\serverapp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

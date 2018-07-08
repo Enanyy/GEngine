@@ -3,8 +3,8 @@
 #define _SERVERAPP_H_
 #include "uv_service.h"
 #include "nocopyable.h"
-#include "singleton.h"
-
+#include "packet.h"
+#include "networkinterface.h"
 using namespace network;
 class serverapp:public uv_service_handler,
 				public nocopyable
@@ -13,8 +13,10 @@ public:
 	serverapp();
 	virtual ~serverapp();
 
-	bool initialize();
-	void shutdown();
+	virtual bool initialize();
+	virtual void shutdown();
+
+	void on_message(void* session, const int id, const char* data, const size_t length);
 
 protected:
 	void on_newsession(uv_session* session) override;
