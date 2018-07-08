@@ -44,11 +44,11 @@ public:
 		}
 	}
 
-	bool is_type(const std::type_info& type)const { return typeid(receiver<T>) == type; }
+	bool is_type(const std::type_info& type)const { return typeid(T) == type; }
 
 
 
-	bool equals(const std::type_info& type, const void* object, const int id, function func)const
+	bool equals(const std::type_info& type, const void* object, const int id, function& func)const
 	{
 		if (object == NULL || is_type(type) == false)
 		{
@@ -87,7 +87,7 @@ public:
 		auto iter = m_receivers[id].begin();
 		for (; iter != m_receivers[id].end(); ++iter)
 		{
-			if ((*iter)->is_type(typeid(receiver<T>)))
+			if ((*iter)->is_type(typeid(T)))
 			{
 				auto r = static_cast<receiver<T>*>((*iter));
 				if (r != NULL && r->equals(typeid(T),object,id,func))
@@ -116,7 +116,7 @@ public:
 		{
 			for (auto iter = it->second.begin(); iter != it->second.end(); ++iter)
 			{
-				if ((*iter)->is_type(typeid(receiver<T>)))
+				if ((*iter)->is_type(typeid(T)))
 				{
 					auto r = static_cast<receiver<T>*>(*iter);
 					if (r != NULL && r->equals(typeid(T), object, id, func))

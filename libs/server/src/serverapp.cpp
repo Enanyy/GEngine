@@ -25,10 +25,12 @@ bool serverapp::initialize()
 {
 	printf("aSSSSSSSS\n");
 
- bool r =	networkinterface::instance()->listen<serverapp>(1, this, &serverapp::on_message);
-
+    networkinterface::instance()->listen<serverapp>(1, this, &serverapp::on_message);
 	networkinterface::instance()->dispatch(NULL, 1, "aaa", 3);
-	
+
+	networkinterface::instance()->unlisten<serverapp>(1, this, &serverapp::on_message);
+	networkinterface::instance()->dispatch(NULL, 1, "aaa", 3);
+
 	return true;
 }
 void serverapp::shutdown()
