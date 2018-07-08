@@ -64,3 +64,21 @@ size_t  packet::time()
 	}
 	return read<unsigned int>(PACKET_TIMESTAMP_OFFSET);
 }
+
+size_t	packet::version()
+{
+	if (m_length <= PACKET_VERSION_OFFSET)
+	{
+		return 0;
+	}
+	return read<unsigned int>(PACKET_VERSION_OFFSET);
+}
+size_t	packet::extra()
+{
+
+	if (m_length <= PACKET_EXTRA_OFFSET)
+	{
+		return 0;
+	}
+	return read<unsigned int>(PACKET_EXTRA_OFFSET);
+}
