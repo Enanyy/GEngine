@@ -4,6 +4,7 @@
 
 #pragma comment (lib, "network.lib")
 #pragma comment (lib, "server.lib")
+#pragma comment (lib, "pb.lib")
 
 template <class SERVERAPP>
 int gmain(int argc, char * argv[])
@@ -22,5 +23,11 @@ int gmain(int argc, char * argv[])
 	
 	return 0;
 }
+
+#define GENGINE_MAIN(SERVERAPP)						\
+int main(int argc, char * argv[])					\
+{													\
+	return gmain<SERVERAPP>(argc, argv);			\
+}													
 
 #endif // !_G_MAIN_H_
