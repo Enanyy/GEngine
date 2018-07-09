@@ -45,6 +45,8 @@ namespace network {
 		uv_tcp_server* tcp() { return m_tcp; }
 		uv_udp_server* udp() { return m_udp; }
 
+		int sessionid() {static int sessionId = 0;return ++sessionId;}
+
 	private:
 
 	private:

@@ -9,65 +9,65 @@
 #include "singleton.h"
 #include "packet.h"
 
-
-class ireceiver
+class networkinterface : public singleton<networkinterface>,
+						 public nocopyable
 {
-public:
-	ireceiver() {}
-	virtual ~ireceiver() {}
-
-	virtual void invoke(void*, const int id, const char*, const size_t) const = 0;
-	virtual bool is_type(const std::type_info&)const = 0;
-
-};
-
-template<class T>
-class receiver : public ireceiver
-{
-public:
-	typedef void(T::*function)(void*, const int, const char*, const size_t);
-
-
-	receiver(T* object, int id, function& func) :m_object(object), m_id(id), m_receiver(func) {}
-
-	virtual ~receiver() {
-		m_object = NULL;
-		m_receiver = NULL;
-	}
-
-
-	void invoke(void* u, const int id, const char* data, const size_t length) const
+	class ireceiver
 	{
-		if (id == m_id && m_object)
-		{
-			(m_object->*m_receiver)(u, id, data, length);
-		}
-	}
+	public:
+		ireceiver() {}
+		virtual ~ireceiver() {}
 
-	bool is_type(const std::type_info& type)const { return typeid(T) == type; }
+		virtual void invoke(void*, const int id, const char*, const size_t) const = 0;
+		virtual bool is_type(const std::type_info&)const = 0;
 
+	};
 
-
-	bool equals(const std::type_info& type, const void* object, const int id, function& func)const
+	template<class T>
+	class receiver : public ireceiver
 	{
-		if (object == NULL || is_type(type) == false)
-		{
-			return false;
+	public:
+		typedef void(T::*function)(void*, const int, const char*, const size_t);
+
+
+		receiver(T* object, int id, function& func) :m_object(object), m_id(id), m_receiver(func) {}
+
+		virtual ~receiver() {
+			m_object = NULL;
+			m_receiver = NULL;
 		}
 
-		return m_object == object && id == m_id && func == m_receiver;
-	}
 
-private:
-	T* m_object;
+		void invoke(void* u, const int id, const char* data, const size_t length) const
+		{
+			if (id == m_id && m_object)
+			{
+				(m_object->*m_receiver)(u, id, data, length);
+			}
+		}
 
-	int m_id;
+		bool is_type(const std::type_info& type)const { return typeid(T) == type; }
 
-	function& m_receiver;
 
-};
-class networkinterface : public singleton<networkinterface>
-{
+
+		bool equals(const std::type_info& type, const void* object, const int id, function& func)const
+		{
+			if (object == NULL || is_type(type) == false)
+			{
+				return false;
+			}
+
+			return m_object == object && id == m_id && func == m_receiver;
+		}
+
+	private:
+		T* m_object;
+
+		int m_id;
+
+		function& m_receiver;
+
+	};
 	
 public:
 	

@@ -13,16 +13,19 @@ packet::packet(char* data, size_t length):memorystream(length)
 	resize(length);
 	append(data, length);
 }
-packet::packet(int id, char* body, size_t bodylength)
+packet::packet(int id, char* body, size_t bodylength,int extra)
 {
 	m_length = (size_t)(PACKET_HEAD_LENGTH + bodylength);
 	clear();
 
 	resize(m_length);
+	time_t t = ::time(NULL);
 
-	append<int>(id);
-	append<int>(0);
-	append<int>(bodylength);
+	append<int>(id);				//id
+	append<int>(PACKET_VERSION);	//version
+	append<int>(t);					//time
+	append<int>(bodylength);		//bodylength
+	append<int>(extra);				//extra
 	append(body, bodylength);
 }
 
@@ -62,7 +65,7 @@ size_t  packet::time()
 	{
 		return 0;
 	}
-	return read<unsigned int>(PACKET_TIMESTAMP_OFFSET);
+	return read<size_t>(PACKET_TIMESTAMP_OFFSET);
 }
 
 size_t	packet::version()

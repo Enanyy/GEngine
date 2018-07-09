@@ -177,11 +177,7 @@ namespace network {
 			return;
 		}
 
-		static int sessionId = 0;
-
-		++sessionId;
-
-		uv_session* session = new uv_session(sessionId);
+		uv_session* session = new uv_session(server->service()->sessionid());
 
 		session->service(server->service());
 

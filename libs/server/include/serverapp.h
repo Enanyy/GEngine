@@ -5,6 +5,7 @@
 #include "nocopyable.h"
 #include "packet.h"
 #include "networkinterface.h"
+#include "eventdispatch.h"
 using namespace network;
 class serverapp:public uv_service_handler,
 				public nocopyable
@@ -15,8 +16,6 @@ public:
 
 	virtual bool initialize();
 	virtual void shutdown();
-
-	void on_message(void* session, const int id, const char* data, const size_t length);
 
 protected:
 	void on_newsession(uv_session* session) override;

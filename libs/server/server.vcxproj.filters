@@ -36,6 +36,12 @@
     <ClInclude Include="include\networkinterface.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\eventdispatch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\platform.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\serverapp.cpp">

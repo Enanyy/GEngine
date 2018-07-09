@@ -1,0 +1,16 @@
+package pb;
+
+message cs_login_request
+{
+	optional string account = 2; //账号
+	optional string password = 3; //密码
+}
+
+message cs_login_return
+{
+	 optional uint32 result = 1; //0成功，其他为失败码
+	 optional string ip = 2;
+	 optional uint32 port = 3;
+
+}
+
