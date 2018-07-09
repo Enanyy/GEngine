@@ -33,6 +33,9 @@
     <ClInclude Include="include\uv_udp_server.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\uv_tcp_client.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\uv_service.cpp">
@@ -45,6 +48,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\uv_udp_server.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uv_tcp_client.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

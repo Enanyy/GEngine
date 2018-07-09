@@ -11,7 +11,7 @@ namespace network {
 	{
 		friend class uv_service;
 	public:
-		uv_service_handler() {}
+		uv_service_handler():m_service(NULL) {}
 		virtual ~uv_service_handler() { m_service = NULL; }
 
 		uv_service* service() const { return m_service; }

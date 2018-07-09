@@ -5,6 +5,9 @@ namespace network {
 	uv_service::uv_service(uv_service_handler* handler) :
 		m_handler(handler),
 		m_loop(uv_default_loop()),
+		m_tcp(NULL),
+		m_udp(NULL),
+		m_clients(),
 		m_sessions(),
 		m_error(),
 		m_shutdown(false),
@@ -23,11 +26,28 @@ namespace network {
 
 		m_tcp->close();
 		m_udp->close();
+	
 
 		delete m_tcp;
 		delete m_udp;
 		m_tcp = NULL;
 		m_udp = NULL;
+
+		for (auto it = m_sessions.begin(); it != m_sessions.end(); ++it)
+		{
+			auto session = it->second;
+			session->close();
+			delete session;
+		}
+
+		for (auto it = m_clients.begin(); it != m_clients.end(); ++it)
+		{
+			auto client = it->second; 
+			client->close();
+			delete client;
+		}
+
+		m_clients.clear();
 	}
 
 	bool uv_service::initialize(const char* ip, const int tcp_port, const int udp_port, bool ipv6)
@@ -40,17 +60,9 @@ namespace network {
 		m_tcp = new uv_tcp_server(this);
 		m_udp = new uv_udp_server(this);
 
-
-		if (m_tcp->initialize(ip, tcp_port, ipv6) == false)
-		{
-			return false;
-		}
-		if (m_udp->initialize(ip, udp_port, ipv6) == false)
-		{
-			return false;
-		}
-
-		
+		ASSERT(m_tcp->initialize(ip, tcp_port, ipv6));
+		ASSERT(m_udp->initialize(ip, udp_port, ipv6));
+				
 		m_init = true;
 
 		return true;
@@ -146,4 +158,34 @@ namespace network {
 		printf("%s.\n", m_error.c_str());
 	}
 
+	bool uv_service::client(uv_tcp_client* client)
+	{
+		if (client == NULL || client->session()==NULL)
+		{
+			return false;
+		}
+
+		int id = client->session()->id();
+
+		auto it = m_clients.find(id);
+		if (it != m_clients.end())
+		{
+			return false;
+		}
+		
+		m_clients.insert(std::make_pair(id, client));
+	
+		return true;
+	}
+
+	uv_tcp_client* uv_service::client(int id)
+	{
+		auto it = m_clients.find(id);
+
+		if (it != m_clients.end())
+		{
+			return it->second;
+		}
+		return NULL;
+	}
 }

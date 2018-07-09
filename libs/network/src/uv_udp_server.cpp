@@ -212,7 +212,7 @@ namespace network {
 
 		if (nread > 0)
 		{
-			server->service()->on_udp_receive((struct sockaddr_in*)addr, buf->base, buf->len);
+			server->service()->on_udp_receive((struct sockaddr_in*)addr, buf->base, nread);
 		}
 		else if (nread == 0)
 		{

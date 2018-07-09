@@ -101,7 +101,7 @@ public:
 			m_receivers[id].push_back(new receiver<T>(object, id, func));
 		}
 
-		return true;
+		return exist == false;
 	}
 	template<typename T>
 	void unlisten(int id, T* object, void (T::* func)(void*, const int, const char*, const size_t))

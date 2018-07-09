@@ -1,8 +1,6 @@
 #ifndef _PB_MESSAGE_H_
 #define _PB_MESSAGE_H_
 
-typedef unsigned long long uint32;
-
 namespace pbmessage
 {
 	enum

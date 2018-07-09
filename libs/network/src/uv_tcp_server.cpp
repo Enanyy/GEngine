@@ -225,7 +225,7 @@ namespace network {
 
 		if (nread > 0)
 		{
-			service->on_tcp_receive(session, buf->base, buf->len);
+			service->on_tcp_receive(session, buf->base, nread);
 		}
 		else if (nread == 0)
 		{
