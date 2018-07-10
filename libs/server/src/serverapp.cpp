@@ -52,7 +52,7 @@ bool serverapp::registerserver(const std::string&  ip, const int port)
 
 	return true;
 }
-void serverapp::on_registerserver(uv_tcp_session* session, char* data, size_t length)
+void serverapp::on_registerserver(uv_tcp_session* session, packet*data)
 {
 	
 }

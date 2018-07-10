@@ -28,7 +28,7 @@ namespace network
 			return false;
 		}
 
-		m_session = new uv_tcp_session(m_service->sessionid());
+		m_session = new uv_tcp_session(m_service->gen_sessionid());
 
 		int r = uv_tcp_init(m_service->loop(), m_session->tcp());
 		if (r != 0)

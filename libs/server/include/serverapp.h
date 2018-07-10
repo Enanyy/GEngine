@@ -27,8 +27,7 @@ public:
 	serverapp();
 	virtual ~serverapp();
 
-	virtual bool initialize();
-	virtual void shutdown();
+	
 
 	const SERVERAPPID			id()const { return m_id; }
 	const SERVERAPPTYPE			type()const { return m_type; }
@@ -41,9 +40,11 @@ protected:
 	void on_tcpreceive(uv_tcp_session* session, char* data, size_t length) override;
 	void on_udpreceive(sockaddr_in* addr, char* data, size_t length) override;
 
-	void on_registerserver(uv_tcp_session* session,char* data, size_t length);
+	void on_registerserver(uv_tcp_session* session,packet*data);
 
+	virtual bool initialize();
 	virtual void update();
+	virtual void shutdown();
 private:
 	SERVERAPPID			m_id;
 	SERVERAPPTYPE		m_type;

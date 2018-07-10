@@ -56,6 +56,12 @@ namespace network {
 		{
 			return true;
 		}
+		if (m_handler == NULL)
+		{
+			return false;
+		}
+
+		ASSERT(m_handler->initialize());
 
 		m_tcp = new uv_tcp_server(this);
 		m_udp = new uv_udp_server(this);
@@ -70,6 +76,11 @@ namespace network {
 
 	void uv_service::shutdown()
 	{
+		if (m_handler)
+		{
+			m_handler->shutdown();
+		}
+
 		m_shutdown = true;
 	}
 
@@ -93,25 +104,25 @@ namespace network {
 		return true;
 	}
 
-	void uv_service::close(int id)
+	void uv_service::close_session(int id)
 	{
-		auto s = session(id);
-		if (s)
+		auto session = get_session(id);
+		if (session)
 		{
-			s->close();
+			session->close();
 
 			m_sessions.erase(id);
 			
 			if (m_handler)
 			{
-				m_handler->on_removesession(s);
+				m_handler->on_removesession(session);
 			}
 
-			delete s;
+			delete session;
 		}
 	}
 
-	uv_tcp_session* uv_service::session(int id)
+	uv_tcp_session* uv_service::get_session(int id)
 	{
 		auto it = m_sessions.begin();
 		for (; it != m_sessions.end(); ++it)
@@ -170,7 +181,7 @@ namespace network {
 		printf("%s.\n", m_error.c_str());
 	}
 
-	bool uv_service::registerconnection(uv_tcp_connection* connection)
+	bool uv_service::add_connection(uv_tcp_connection* connection)
 	{
 		if (connection == NULL || connection->session()==NULL)
 		{
@@ -190,7 +201,7 @@ namespace network {
 		return true;
 	}
 
-	uv_tcp_connection* uv_service::getconnection(int id)
+	uv_tcp_connection* uv_service::get_connection(int id)
 	{
 		auto it = m_connections.find(id);
 
@@ -200,7 +211,7 @@ namespace network {
 		}
 		return NULL;
 	}
-	uv_tcp_connection* uv_service::getconnection(const std::string&  ip, const int port)
+	uv_tcp_connection* uv_service::get_connection(const std::string&  ip, const int port)
 	{
 		auto it = m_connections.begin();
 		for (; it != m_connections.end(); ++it)

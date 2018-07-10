@@ -181,7 +181,7 @@ namespace network {
 			return;
 		}
 
-		uv_tcp_session* session = new uv_tcp_session(server->service()->sessionid());
+		uv_tcp_session* session = new uv_tcp_session(server->service()->gen_sessionid());
 
 		session->service(server->service());
 
@@ -248,7 +248,7 @@ namespace network {
 			{
 				ASSERT(nread >= 0);
 			}
-			service->close(session->id());
+			service->close_session(session->id());
 		}
 
 	}

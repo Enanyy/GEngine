@@ -36,9 +36,9 @@ namespace network {
 
 		void shutdown();
 
-		uv_tcp_session*			session(int id);
-		int						sessionid() { static int id = 0; return ++id; }
-		void					close(int id);
+		uv_tcp_session*			get_session(int id);
+		void					close_session(int id);
+		int						gen_sessionid() { static int id = 0; return ++id; }
 
 	
 		void					error(int status);
@@ -50,9 +50,9 @@ namespace network {
 		uv_tcp_server*			tcp()	{ return m_tcp; }
 		uv_udp_server*			udp()	{ return m_udp; }
 		
-		bool					registerconnection(uv_tcp_connection* client);
-		uv_tcp_connection*		getconnection(int id);
-		uv_tcp_connection*      getconnection(const std::string& ip, const int port);
+		bool					add_connection(uv_tcp_connection* client);
+		uv_tcp_connection*		get_connection(int id);
+		uv_tcp_connection*      get_connection(const std::string& ip, const int port);
 
 	private:
 		void on_newsession(uv_tcp_session* session);

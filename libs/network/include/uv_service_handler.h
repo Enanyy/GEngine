@@ -21,7 +21,9 @@ namespace network {
 		virtual void on_tcpreceive(uv_tcp_session* session, char* data, size_t length) = 0;
 		virtual void on_udpreceive(sockaddr_in* addr, char* data, size_t length) = 0;
 
+		virtual bool initialize() = 0;
 		virtual void update() = 0;
+		virtual void shutdown() = 0;
 
 	private:
 		uv_service* m_service;

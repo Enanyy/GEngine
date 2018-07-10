@@ -10,12 +10,10 @@
 template <class SERVERAPP>
 int gmain(int argc, char * argv[])
 {
-	SERVERAPP app;
-	app.initialize();
-
 	int tcp_port = 7000;
 	int udp_port = 8000;
 
+	SERVERAPP app;
 	uv_service service(&app);
 	if (service.initialize("0.0.0.0", tcp_port, udp_port, false))
 	{
@@ -24,7 +22,6 @@ int gmain(int argc, char * argv[])
 		service.run();
 	}
 	
-	app.shutdown();
 	service.shutdown();
 	
 	return 0;
