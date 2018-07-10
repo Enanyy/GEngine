@@ -13,12 +13,12 @@ namespace network
 {
 	class uv_service;
 	class uv_session;
-	class uv_tcp_client
+	class uv_tcp_connection
 	{
 	
 	public:
-		uv_tcp_client(uv_service* service);
-		virtual ~uv_tcp_client();
+		uv_tcp_connection(uv_service* service);
+		virtual ~uv_tcp_connection();
 
 		bool initialize();
 		bool connect(const char* ip, const int port, bool ipv6 = false);

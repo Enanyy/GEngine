@@ -76,7 +76,7 @@ namespace network {
 			return;
 		}
 
-		auto buffer = session->tcp_writebuf();
+		auto buffer = session->writebuf();
 		if (buffer.len < length)
 		{
 			buffer.base = (char*)realloc(buffer.base, length);
@@ -87,7 +87,7 @@ namespace network {
 		memcpy(buffer.base, data, length);
 		buffer.len = length;
 
-		int r = uv_write(&session->tcp_write(), (uv_stream_t*)session->tcp(), &buffer, 1, on_send);
+		int r = uv_write(&session->write(), (uv_stream_t*)session->tcp(), &buffer, 1, on_send);
 
 		ASSERT(r == 0);
 	}
@@ -260,7 +260,7 @@ namespace network {
 
 		uv_session* session = (uv_session*)hanle->data;
 
-		*buf = session->tcp_readbuf();
+		*buf = session->readbuf();
 	}
 
 	void  uv_tcp_server::on_close(uv_handle_t* handle)

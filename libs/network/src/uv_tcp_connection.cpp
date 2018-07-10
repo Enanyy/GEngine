@@ -1,8 +1,8 @@
-#include "uv_tcp_client.h"
+#include "uv_tcp_connection.h"
 
 namespace network
 {
-	uv_tcp_client::uv_tcp_client(uv_service* service):
+	uv_tcp_connection::uv_tcp_connection(uv_service* service):
 		m_service(service),
 		m_session(NULL),
 		m_init(false),
@@ -11,12 +11,12 @@ namespace network
 	{
 		
 	}
-	uv_tcp_client:: ~uv_tcp_client()
+	uv_tcp_connection:: ~uv_tcp_connection()
 	{
 		close();
 	}
 
-	bool uv_tcp_client::initialize()
+	bool uv_tcp_connection::initialize()
 	{
 		if (m_init)
 		{
@@ -45,7 +45,7 @@ namespace network
 		return true;
 	}
 
-	void uv_tcp_client::close()
+	void uv_tcp_connection::close()
 	{
 		uv_close((uv_handle_t*)m_session->tcp(), on_close);
 		m_connect = false;
@@ -60,7 +60,7 @@ namespace network
 	}
 
 
-	bool uv_tcp_client::connect(const char* ip, const int port, bool ipv6 )
+	bool uv_tcp_connection::connect(const char* ip, const int port, bool ipv6 )
 	{
 		if (m_session == NULL)
 		{
@@ -114,14 +114,14 @@ namespace network
 		return true;
 	}
 
-	void uv_tcp_client::disconnect()
+	void uv_tcp_connection::disconnect()
 	{
 		uv_close((uv_handle_t*)m_session->tcp(), on_close);
 		m_connect = false;
 	}
 
 
-	bool uv_tcp_client::no_delay(bool enable)
+	bool uv_tcp_connection::no_delay(bool enable)
 	{
 		int r = uv_tcp_nodelay(m_session->tcp(), enable ? 1 : 0);
 		if (r != 0)
@@ -132,7 +132,7 @@ namespace network
 		return true;
 	}
 
-	bool uv_tcp_client::keep_alive(int enable, unsigned int delay)
+	bool uv_tcp_connection::keep_alive(int enable, unsigned int delay)
 	{
 		int r = uv_tcp_keepalive(m_session->tcp(), enable, delay);
 		if (r != 0)
@@ -143,7 +143,7 @@ namespace network
 		return true;
 	}
 
-	void uv_tcp_client::send(const char* data, const size_t length)
+	void uv_tcp_connection::send(const char* data, const size_t length)
 	{
 		if (m_init == false || m_connect == false)
 		{
@@ -156,19 +156,19 @@ namespace network
 			return;
 		}
 
-		if (m_session->tcp_writebuf().len < length)
+		if (m_session->writebuf().len < length)
 		{
 			//重新分配内存
-			m_session->tcp_writebuf().base = (char*)realloc(m_session->tcp_writebuf().base, length);
-			m_session->tcp_writebuf().len = length;
+			m_session->writebuf().base = (char*)realloc(m_session->writebuf().base, length);
+			m_session->writebuf().len = length;
 		}
 
-		memset(m_session->tcp_writebuf().base, 0, m_session->tcp_writebuf().len);
+		memset(m_session->writebuf().base, 0, m_session->writebuf().len);
 
-		memcpy(m_session->tcp_writebuf().base, data, length);
-		m_session->tcp_writebuf().len = length;
+		memcpy(m_session->writebuf().base, data, length);
+		m_session->writebuf().len = length;
 
-		int  r = uv_write(&m_session->tcp_write(), (uv_stream_t*)m_session->tcp(), &m_session->tcp_writebuf(), 1, on_send);
+		int  r = uv_write(&m_session->write(), (uv_stream_t*)m_session->tcp(), &m_session->writebuf(), 1, on_send);
 
 		if (r != 0)
 		{
@@ -177,22 +177,22 @@ namespace network
 	}
 
 	
-	void uv_tcp_client::on_connect(uv_connect_t* req, int status)
+	void uv_tcp_connection::on_connect(uv_connect_t* req, int status)
 	{
 		if (req->data == NULL)
 		{
 			return;
 		}
-		uv_tcp_client* client = (uv_tcp_client*)req->data;
+		uv_tcp_connection* con = (uv_tcp_connection*)req->data;
 		if (status == 0)
 		{
-			int r = uv_read_start((uv_stream_t*)client->session()->tcp(), on_alloc_buffer, on_receive);
+			int r = uv_read_start((uv_stream_t*)con->session()->tcp(), on_alloc_buffer, on_receive);
 			if (r != 0)
 			{
 				ASSERT(r == 0);
 			}
 
-			client->m_connect = true;
+			con->m_connect = true;
 		}
 		else
 		{
@@ -200,7 +200,7 @@ namespace network
 		}	
 	}
 
-	void uv_tcp_client::on_receive(uv_stream_t* req, ssize_t nread, const uv_buf_t* buf)
+	void uv_tcp_connection::on_receive(uv_stream_t* req, ssize_t nread, const uv_buf_t* buf)
 	{
 		if (req->data == NULL)
 		{
@@ -235,7 +235,7 @@ namespace network
 		}
 	}
 
-	void uv_tcp_client::on_send(uv_write_t* req, int status)
+	void uv_tcp_connection::on_send(uv_write_t* req, int status)
 	{
 		if (status < 0)
 		{
@@ -245,16 +245,16 @@ namespace network
 		ASSERT(status >= 0);
 	}
 
-	void uv_tcp_client::on_alloc_buffer(uv_handle_t* handle, size_t suggested_size, uv_buf_t* buf)
+	void uv_tcp_connection::on_alloc_buffer(uv_handle_t* handle, size_t suggested_size, uv_buf_t* buf)
 	{	
 		assert(handle->data != nullptr);
 
-		uv_tcp_client *client = (uv_tcp_client *)handle->data;
+		uv_tcp_connection *con = (uv_tcp_connection *)handle->data;
 
-		*buf = client->session()->tcp_readbuf();
+		*buf = con->session()->readbuf();
 	}
 
-	void uv_tcp_client::on_close(uv_handle_t* handle)
+	void uv_tcp_connection::on_close(uv_handle_t* handle)
 	{
 		if (handle)
 		{

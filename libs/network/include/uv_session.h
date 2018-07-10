@@ -21,9 +21,9 @@ namespace network {
 		 *The handle of tcp.
 		*/
 		uv_tcp_t*						tcp()const { return m_tcp; }
-		uv_buf_t&						tcp_readbuf() { return m_tcp_readbuf; }
-		uv_buf_t&						tcp_writebuf() { return m_tcp_writebuf; }
-		uv_write_t&						tcp_write() { return m_tcp_write; }
+		uv_buf_t&						readbuf() { return m_readbuf; }
+		uv_buf_t&						writebuf() { return m_writebuf; }
+		uv_write_t&						write() { return m_write; }
 
 
 		void close();
@@ -36,10 +36,10 @@ namespace network {
 		uv_service*			m_service;
 		uv_tcp_t*			m_tcp;
 
-		uv_buf_t			m_tcp_readbuf;
-		uv_buf_t			m_tcp_writebuf;
+		uv_buf_t			m_readbuf;
+		uv_buf_t			m_writebuf;
 
-		uv_write_t			m_tcp_write;
+		uv_write_t			m_write;
 	};
 }
 #endif //_UV_SESSION_H_

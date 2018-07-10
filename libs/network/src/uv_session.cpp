@@ -8,8 +8,8 @@ namespace network {
 		m_tcp = (uv_tcp_t*)malloc(sizeof(uv_tcp_t));
 		m_tcp->data = this;
 
-		m_tcp_readbuf	= uv_buf_init((char*)malloc(BUFFER_SIZE), BUFFER_SIZE);
-		m_tcp_writebuf	= uv_buf_init((char*)malloc(BUFFER_SIZE), BUFFER_SIZE);
+		m_readbuf	= uv_buf_init((char*)malloc(BUFFER_SIZE), BUFFER_SIZE);
+		m_writebuf	= uv_buf_init((char*)malloc(BUFFER_SIZE), BUFFER_SIZE);
 	
 	}
 
@@ -17,13 +17,13 @@ namespace network {
 	{
 		close();
 
-		free(m_tcp_readbuf.base);
-		free(m_tcp_writebuf.base);
+		free(m_readbuf.base);
+		free(m_writebuf.base);
 	
 		free(m_tcp);
 
-		m_tcp_readbuf.base = NULL;
-		m_tcp_writebuf.base = NULL;
+		m_readbuf.base = NULL;
+		m_writebuf.base = NULL;
 	
 		m_tcp = NULL;
 	}
