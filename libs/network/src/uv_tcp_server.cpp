@@ -16,7 +16,11 @@ namespace network {
 		m_init = false;
 		m_ipv6 = false;
 		m_service = NULL;
-		uv_close((uv_handle_t*)&m_handle, NULL);
+
+		if (uv_is_active((uv_handle_t*)&m_handle))
+		{
+			uv_close((uv_handle_t*)&m_handle, on_close);
+		}
 
 	}
 
@@ -61,15 +65,15 @@ namespace network {
 
 	void uv_tcp_server::close()
 	{
-		if (m_init)
-		{
+		if (uv_is_active((uv_handle_t*)&m_handle))
+		{	
 			uv_close((uv_handle_t*)&m_handle, on_close);
 		}
 		m_init = false;
 
 	}
 
-	void uv_tcp_server::send(uv_session* session, const char* data, const size_t length)
+	void uv_tcp_server::send(uv_tcp_session* session, const char* data, const size_t length)
 	{
 		if (session == NULL)
 		{
@@ -177,7 +181,7 @@ namespace network {
 			return;
 		}
 
-		uv_session* session = new uv_session(server->service()->sessionid());
+		uv_tcp_session* session = new uv_tcp_session(server->service()->sessionid());
 
 		session->service(server->service());
 
@@ -215,7 +219,7 @@ namespace network {
 			return;
 		}
 
-		uv_session* session = (uv_session*)handle->data;
+		uv_tcp_session* session = (uv_tcp_session*)handle->data;
 
 		if (session == NULL || session->service() == NULL)
 		{
@@ -225,7 +229,7 @@ namespace network {
 
 		if (nread > 0)
 		{
-			service->on_tcp_receive(session, buf->base, nread);
+			service->on_tcpreceive(session, buf->base, nread);
 		}
 		else if (nread == 0)
 		{
@@ -258,14 +262,15 @@ namespace network {
 	{
 		assert(hanle->data != NULL);
 
-		uv_session* session = (uv_session*)hanle->data;
+		uv_tcp_session* session = (uv_tcp_session*)hanle->data;
 
 		*buf = session->readbuf();
 	}
 
 	void  uv_tcp_server::on_close(uv_handle_t* handle)
 	{
-		free(handle);
-
+		if (handle) {
+			free(handle);
+		}
 	}
 }

@@ -6,7 +6,7 @@
 
 #include "uv.h"
 #include "ikcp.h"
-#include "uv_session.h"
+#include "uv_tcp_session.h"
 #include "uv_tcp_server.h"
 #include "uv_udp_server.h"
 #include "uv_tcp_connection.h"
@@ -15,7 +15,7 @@
 namespace network {
 
 	class uv_service_handler;
-	class uv_session;
+	class uv_tcp_session;
 	class uv_tcp_server;
 	class uv_udp_server;
 	class uv_tcp_connection;
@@ -36,7 +36,7 @@ namespace network {
 
 		void shutdown();
 
-		uv_session*				session(int id);
+		uv_tcp_session*			session(int id);
 		int						sessionid() { static int id = 0; return ++id; }
 		void					close(int id);
 
@@ -55,9 +55,9 @@ namespace network {
 		uv_tcp_connection*      getconnection(const std::string& ip, const int port);
 
 	private:
-		void on_newsession(uv_session* session);
-		void on_tcp_receive(uv_session* session, char* data, size_t length);
-		void on_udp_receive(sockaddr_in* addr, char* data, size_t length);
+		void on_newsession(uv_tcp_session* session);
+		void on_tcpreceive(uv_tcp_session* session, char* data, size_t length);
+		void on_udpreceive(sockaddr_in* addr, char* data, size_t length);
 
 	private:
 		uv_service_handler*					m_handler;
@@ -69,7 +69,7 @@ namespace network {
 		std::map<int,uv_tcp_connection*>	m_connections;
 
 		//客户端（或别的服务器）与本服务器的连接
-		std::map<int, uv_session*>			m_sessions;
+		std::map<int, uv_tcp_session*>		m_sessions;
 		std::string							m_error;
 		bool								m_shutdown;
 		bool								m_init;

@@ -5,11 +5,20 @@
 #include "nocopyable.h"
 #include "packet.h"
 #include "networkinterface.h"
-#include "dispatcher.h"
+#include "event.h"
 using namespace network;
 
 typedef unsigned int SERVERAPPID;
-typedef unsigned int SERVERAPPTYPE;
+
+
+enum SERVERAPPTYPE
+{
+	LOGIN,
+	GATEWAY,
+	LOGIC,
+	GAME,
+	DB
+};
 
 class serverapp:public uv_service_handler,
 				public nocopyable
@@ -27,11 +36,12 @@ public:
 	bool						registerserver(const std::string& ip, const int port);
 
 protected:
-	void on_newsession(uv_session* session) override;
-	void on_tcp_receive(uv_session* session, char* data, size_t length) override;
-	void on_udp_receive(sockaddr_in* addr, char* data, size_t length) override;
+	void on_newsession(uv_tcp_session* session) override;
+	void on_removesession(uv_tcp_session* session) override;
+	void on_tcpreceive(uv_tcp_session* session, char* data, size_t length) override;
+	void on_udpreceive(sockaddr_in* addr, char* data, size_t length) override;
 
-	void on_registerserver(uv_session* session,char* data, size_t length);
+	void on_registerserver(uv_tcp_session* session,char* data, size_t length);
 
 	virtual void update();
 private:

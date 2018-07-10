@@ -1,11 +1,11 @@
 #pragma once
-#ifndef _NETWORK_INTERFACE_H_
-#define _NETWORK_INTERFACE_H_
+#ifndef _EVENT_H_
+#define _EVENT_H_
 #include "dispatcher.h"
 #include "packet.h"
 #include "nocopyable.h"
 
-class networkinterface : public nocopyable
+class event : public nocopyable
 {
 
 public:
@@ -16,7 +16,7 @@ public:
 	}
 
 	template<typename T>
-	static void unlisten(const int id,  T* object,  void (T::*func)(const void*, const int, const void*))
+	static void unlisten(const int id, T* object, void (T::*func)(const void*, const int, const void*))
 	{
 		m_dispatcher.unlisten<T>(id, object, func);
 	}
@@ -32,12 +32,12 @@ public:
 	}
 
 private:
-	networkinterface() {}
-	~networkinterface() {}
+	event() {}
+	~event() {}
 
 private:
 	static dispatcher m_dispatcher;
 };
- 
 
-#endif _NETWORK_INTERFACE_H_
+
+#endif _EVENT_H_

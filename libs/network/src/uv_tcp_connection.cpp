@@ -28,7 +28,7 @@ namespace network
 			return false;
 		}
 
-		m_session = new uv_session(m_service->sessionid());
+		m_session = new uv_tcp_session(m_service->sessionid());
 
 		int r = uv_tcp_init(m_service->loop(), m_session->tcp());
 		if (r != 0)
@@ -44,7 +44,11 @@ namespace network
 
 	void uv_tcp_connection::close()
 	{
-		uv_close((uv_handle_t*)m_session->tcp(), on_close);
+		if (uv_is_active((uv_handle_t*)m_session->tcp()))
+		{
+			uv_close((uv_handle_t*)m_session->tcp(), on_close);
+		}
+
 		m_connect = false;
 		m_init = false;
 		m_ipv6 = false;
@@ -204,11 +208,11 @@ namespace network
 			return;
 		}
 
-		uv_session* sesseion = (uv_session*)req->data;
+		uv_tcp_session* sesseion = (uv_tcp_session*)req->data;
 
 		if (nread > 0)
 		{
-			sesseion->service()->on_tcp_receive(sesseion, buf->base, nread);
+			sesseion->service()->on_tcpreceive(sesseion, buf->base, nread);
 		}
 		else if (nread == 0)
 		{

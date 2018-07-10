@@ -24,9 +24,6 @@
     <ClInclude Include="include\uv_service_handler.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\uv_session.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\uv_tcp_server.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -36,12 +33,12 @@
     <ClInclude Include="include\uv_tcp_connection.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\uv_tcp_session.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\uv_service.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="src\uv_session.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\uv_tcp_server.cpp">
@@ -51,6 +48,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\uv_tcp_connection.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uv_tcp_session.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

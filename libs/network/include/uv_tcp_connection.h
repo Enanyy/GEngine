@@ -7,12 +7,11 @@
 #include <assert.h>
 #include "uv_net.h"
 #include "uv_service.h"
-#include "uv_session.h"
 
 namespace network
 {
 	class uv_service;
-	class uv_session;
+	class uv_tcp_session;
 	class uv_tcp_connection
 	{
 	
@@ -32,10 +31,10 @@ namespace network
 		bool keep_alive(int enable, unsigned int delay);
 
 		uv_service*				service() const { return m_service; }
-		uv_session*				session() const  { return m_session; }
+		uv_tcp_session*			session() const  { return m_session; }
 
 		const bool is_connect() const{ return m_connect; }
-		const bool ipv6() { return m_ipv6; }
+		const bool is_ipv6() { return m_ipv6; }
 	
 	private:
 		
@@ -49,7 +48,7 @@ namespace network
 
 	private:
 		uv_service*			    m_service;
-		uv_session*				m_session;
+		uv_tcp_session*			m_session;
 		uv_connect_t			m_tcp_connect;
 	
 

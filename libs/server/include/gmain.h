@@ -13,9 +13,14 @@ int gmain(int argc, char * argv[])
 	SERVERAPP app;
 	app.initialize();
 
+	int tcp_port = 7000;
+	int udp_port = 8000;
+
 	uv_service service(&app);
-	if (service.initialize("0.0.0.0", 1222, 1223, false))
+	if (service.initialize("0.0.0.0", tcp_port, udp_port, false))
 	{
+		printf("service listen on tcp:%d udp:%d\n", tcp_port, udp_port);
+
 		service.run();
 	}
 	

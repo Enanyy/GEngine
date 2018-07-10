@@ -9,11 +9,10 @@
 #include "uv.h"
 #include "uv_net.h"
 #include "uv_service.h"
-#include "uv_session.h"
 namespace network {
 
 	class uv_service;
-	class uv_session;
+	class uv_tcp_session;
 	class uv_tcp_server
 	{
 
@@ -25,12 +24,13 @@ namespace network {
 		void					close();
 
 
-		virtual void			send(uv_session* session, const char* data, const size_t length);
+		virtual void			send(uv_tcp_session* session, const char* data, const size_t length);
 		bool					no_delay(bool enable);
 		bool					keep_alive(int enable, unsigned int delay);
 
 		uv_service*				service() const { return m_service; }
 
+		const bool				is_ipv6()const { return m_ipv6; }
 
 	protected:
 

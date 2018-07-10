@@ -99,13 +99,19 @@ namespace network {
 		if (s)
 		{
 			s->close();
+
 			m_sessions.erase(id);
-			//ÔÚuv_sessnio::on_closeÔÙdelete
-			//delete s;
+			
+			if (m_handler)
+			{
+				m_handler->on_removesession(s);
+			}
+
+			delete s;
 		}
 	}
 
-	uv_session* uv_service::session(int id)
+	uv_tcp_session* uv_service::session(int id)
 	{
 		auto it = m_sessions.begin();
 		for (; it != m_sessions.end(); ++it)
@@ -118,8 +124,9 @@ namespace network {
 		return NULL;
 	}
 
-	void uv_service::on_newsession(uv_session* session)
+	void uv_service::on_newsession(uv_tcp_session* session)
 	{
+		printf("newsession = %d\n", session->id());
 		if (session == NULL)
 		{
 			return;
@@ -140,19 +147,19 @@ namespace network {
 		}
 	}
 
-	void uv_service::on_tcp_receive(uv_session* session, char* data, size_t length)
+	void uv_service::on_tcpreceive(uv_tcp_session* session, char* data, size_t length)
 	{
 		if (m_handler)
 		{
-			m_handler->on_tcp_receive(session, data, length);
+			m_handler->on_tcpreceive(session, data, length);
 		}
 	}
 
-	void uv_service::on_udp_receive(sockaddr_in* addr, char* data, size_t length)
+	void uv_service::on_udpreceive(sockaddr_in* addr, char* data, size_t length)
 	{
 		if (m_handler)
 		{
-			m_handler->on_udp_receive(addr, data, length);
+			m_handler->on_udpreceive(addr, data, length);
 		}
 	}
 
@@ -199,7 +206,7 @@ namespace network {
 		for (; it != m_connections.end(); ++it)
 		{
 			auto connection = it->second;
-			if (connection->ipv6())
+			if (connection->is_ipv6())
 			{
 				struct sockaddr_in6 addr;
 				int length = sizeof(sockaddr_in6);

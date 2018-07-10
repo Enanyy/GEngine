@@ -1,15 +1,15 @@
 #pragma once
-#ifndef _UV_SESSION_H_
-#define _UV_SESSION_H_
+#ifndef _UV_TCP_SESSION_H_
+#define _UV_TCP_SESSION_H_
 #include "uv_service.h"
 namespace network {
 
 	class uv_service;
-	class uv_session
+	class uv_tcp_session
 	{
 	public:
-		uv_session(int id);
-		virtual ~uv_session();
+		uv_tcp_session(int id);
+		virtual ~uv_tcp_session();
 
 
 		const int						id() const { return m_id; }
@@ -42,4 +42,4 @@ namespace network {
 		uv_write_t			m_write;
 	};
 }
-#endif //_UV_SESSION_H_
+#endif //_UV_TCP_SESSION_H_

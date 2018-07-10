@@ -4,7 +4,6 @@
 #include <string>
 #include <assert.h>
 #include "uv_service.h"
-#include "uv_session.h"
 #include "uv_net.h"
 namespace network {
 
