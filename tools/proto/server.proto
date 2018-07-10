@@ -1,0 +1,23 @@
+package pb;
+
+message serverappinfo
+{
+	optional uint32 id 		= 1; 	//serverapp id
+	optional uint32 type 	= 2; 	//serverapp type
+	optional string name 	= 3;  	//serverapp name
+	optional string ip   	= 4;  	//serverapp ip
+	optional uint32 port 	= 5;    //serverapp port
+}
+
+message ss_register_request
+{
+	optional serverappinfo info = 1;
+}
+
+message ss_register_return
+{
+	optional uint32 result = 1; //0成功，其他为失败码
+	optional serverappinfo info = 2;
+
+}
+

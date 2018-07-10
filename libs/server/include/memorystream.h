@@ -39,10 +39,9 @@ class memorystream
         }
 
         bool                empty()     const   { return m_data.empty();}
-        int                 size()      const   { return m_data.size(); }
+        size_t              size()      const   { return m_data.size(); }
         size_t              length()    const   { return m_length; }
-
-        char*               data()              {return &m_data[0];}
+        char*               data()              { return &m_data[0];}
 
         void resize(const size_t n)
         {
@@ -117,8 +116,8 @@ class memorystream
         }
 
     protected:
-        std::vector<char> m_data;
-        int m_length;
+        std::vector<char>		m_data;
+        size_t					m_length;
 
 };
 

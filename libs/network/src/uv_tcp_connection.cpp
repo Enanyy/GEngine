@@ -36,9 +36,6 @@ namespace network
 			ASSERT(r == 0);
 			return false;
 		}
-
-		m_session->tcp()->data = this;
-
 		
 		m_init = true;
 

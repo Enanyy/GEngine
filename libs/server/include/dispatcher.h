@@ -1,13 +1,12 @@
 #pragma once
-#ifndef _EVENT_DISPATCH_H_
-#define _EVENT_DISPATCH_H_
-#include "singleton.h"
+#ifndef _DISPATCHER_H_
+#define _DISPATCHER_H_
 #include <typeinfo>
 #include <map>
 #include <list>
+#include "nocopyable.h"
 
-class eventdispatch:public singleton<eventdispatch>,
-					public nocopyable
+class dispatcher :public nocopyable
 {
 	class ireceiver
 	{
@@ -15,7 +14,7 @@ class eventdispatch:public singleton<eventdispatch>,
 		ireceiver() {}
 		virtual ~ireceiver() {}
 
-		virtual void invoke(void*, const int id, const void*) const = 0;
+		virtual void invoke(const void*, const int id, const void*) const = 0;
 		virtual bool is_type(const std::type_info&)const = 0;
 
 	};
@@ -24,10 +23,10 @@ class eventdispatch:public singleton<eventdispatch>,
 	class receiver : public ireceiver
 	{
 	public:
-		typedef void(T::*function)(void*, const int, const void*);
+		typedef void(T::*function)(const void*, const int, const void*);
 
 
-		receiver(T* object, int id, function& func) :m_object(object), m_id(id), m_receiver(func) {}
+		receiver( T* object, const int id,  function func) :m_object(object), m_id(id), m_receiver(func) {}
 
 		virtual ~receiver() {
 			m_object = NULL;
@@ -35,7 +34,7 @@ class eventdispatch:public singleton<eventdispatch>,
 		}
 
 
-		void invoke(void* object, const int id, const void* data) const
+		void invoke(const void* object, const int id, const void* data) const
 		{
 			if (id == m_id && m_object)
 			{
@@ -47,7 +46,7 @@ class eventdispatch:public singleton<eventdispatch>,
 
 
 
-		bool equals(const std::type_info& type, const void* object, const int id, function& func)const
+		bool equals(const std::type_info& type, const void* object, const int id, function func)const
 		{
 			if (object == NULL || is_type(type) == false)
 			{
@@ -62,14 +61,14 @@ class eventdispatch:public singleton<eventdispatch>,
 
 		int m_id;
 
-		function& m_receiver;
+		function m_receiver;
 
 	};
 
 public:
 
 	template<typename T>
-	bool listen(int id, T* object, void (T::*func)(void*, const int, const void*))
+	bool listen(const int id,  T* object, void (T::*func)(const void*, const int, const void*))
 	{
 		if (object == NULL)
 		{
@@ -101,7 +100,7 @@ public:
 		return exist == false;
 	}
 	template<typename T>
-	void unlisten(int id, T* object, void (T::* func)(void*, const int, const void*))
+	void unlisten(const int id, T* object, void (T::* func)(const void*, const int, const void*))
 	{
 		if (object == NULL)
 		{
@@ -129,7 +128,7 @@ public:
 	}
 
 
-	void dispatch(void* object, const int id, const void* data)
+	void dispatch(const void* object, const int id, const void* data)
 	{
 		auto it = m_receivers.find(id);
 		if (it != m_receivers.end())
@@ -166,4 +165,4 @@ private:
 
 
 
-#endif // !_EVENT_DISPATCH_H_
+#endif // !_DISPATCHER_H_

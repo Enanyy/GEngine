@@ -35,8 +35,9 @@ namespace network
 		uv_session*				session() const  { return m_session; }
 
 		const bool is_connect() const{ return m_connect; }
+		const bool ipv6() { return m_ipv6; }
 	
-	protected:
+	private:
 		
 
 		static void on_connect(uv_connect_t* req, int status);

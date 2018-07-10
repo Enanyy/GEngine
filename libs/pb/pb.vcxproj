@@ -154,10 +154,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\login.pb.cc" />
+    <ClCompile Include="src\server.pb.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\pbmessage.h" />
     <ClInclude Include="src\login.pb.h" />
+    <ClInclude Include="src\server.pb.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

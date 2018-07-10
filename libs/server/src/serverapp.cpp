@@ -1,4 +1,7 @@
 #include "serverapp.h"
+#include "pbmessage.h"
+#include "server.pb.h"
+
 serverapp::serverapp()
 {
 }
@@ -30,4 +33,19 @@ bool serverapp::initialize()
 void serverapp::shutdown()
 {
 
+}
+
+void serverapp::update()
+{
+}
+
+bool serverapp::registerserver(const std::string&  ip, const int port)
+{
+	
+
+	return true;
+}
+void serverapp::on_registerserver(uv_session* session, char* data, size_t length)
+{
+	
 }

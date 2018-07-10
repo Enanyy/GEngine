@@ -11,10 +11,13 @@ class singleton
         {
            if(m_instance == NULL)
            {
+			   uv_mutex_init(&m_lock);
+			   uv_mutex_lock(&m_lock);
                if(m_instance == NULL)
                {
 				   m_instance = new T;
                }
+			   uv_mutex_unlock(&m_lock);
            }
            return m_instance;
         }
@@ -26,11 +29,11 @@ class singleton
                 delete m_instance;
 				m_instance = NULL;
             }
-			
+			uv_mutex_destroy(&m_lock);
         }
     protected:
-		singleton(){  }
-        virtual ~singleton(){ }
+		singleton() {  }
+		virtual ~singleton() {  }
 
 		singleton(const singleton&){}
 		singleton operator=(const singleton&){}
@@ -40,6 +43,5 @@ class singleton
 		static uv_mutex_t m_lock;
 };
 
-template<class T>
-T* singleton<T>::m_instance = NULL;
+
 #endif

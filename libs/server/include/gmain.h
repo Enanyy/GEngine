@@ -5,6 +5,7 @@
 #pragma comment (lib, "network.lib")
 #pragma comment (lib, "server.lib")
 #pragma comment (lib, "pb.lib")
+#pragma comment (lib, "libprotobuf.lib")
 
 template <class SERVERAPP>
 int gmain(int argc, char * argv[])

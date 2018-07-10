@@ -23,7 +23,7 @@ packet::packet(int id, char* body, size_t bodylength,int extra)
 
 	append<int>(id);				//id
 	append<int>(PACKET_VERSION);	//version
-	append<int>(t);					//time
+	append<time_t>(t);			    //time
 	append<int>(bodylength);		//bodylength
 	append<int>(extra);				//extra
 	append(body, bodylength);

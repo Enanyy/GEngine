@@ -16,11 +16,11 @@ namespace network {
 		uv_udp_server(uv_service* service);
 		virtual ~uv_udp_server();
 
-		bool initialize(const char* ip, const int port, bool ipv6 = false);
+		bool initialize(const std::string&  ip, const int port, bool ipv6 = false);
 
 		void close();
 
-		void send(const char* ip, const int port, const char* data, const size_t length);
+		void send(const std::string& ip, const int port, const char* data, const size_t length);
 
 		void send(const sockaddr* addr, const char* data, const size_t length);
 
@@ -35,8 +35,8 @@ namespace network {
 
 	protected:
 
-		int bind_ipv4(const char* ip, const int port);
-		int bind_ipv6(const char* ip, const int port);
+		int bind_ipv4(const std::string& ip, const int port);
+		int bind_ipv6(const std::string& ip, const int port);
 		int listen();
 
 

@@ -89,7 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>src;include;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;$($(SolutionDir)libs\network\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;src;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;$(SolutionDir)3rd\protobuf-2.6.1\src\;$(SolutionDir)libs\pb\src;$(SolutionDir)libs\pb\include;$(SolutionDir)libs\network\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)lib\$(TargetName)$(TargetExt)</OutputFile>
@@ -103,7 +103,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>include;src;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;$(SolutionDir)libs\network\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;src;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;$(SolutionDir)3rd\protobuf-2.6.1\src\;$(SolutionDir)libs\pb\src;$(SolutionDir)libs\pb\include;$(SolutionDir)libs\network\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_LARGEFILE_SOURCE;_FILE_OFFSET_BITS=64;_WIN32_WINNT=0x0600;_GNU_SOURCE;DEBUG;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Lib>
@@ -117,7 +117,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>include;src;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;$(SolutionDir)libs\network\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;src;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;$(SolutionDir)3rd\protobuf-2.6.1\src\;$(SolutionDir)libs\pb\src;$(SolutionDir)libs\pb\include;$(SolutionDir)libs\network\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -134,7 +134,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>include;src;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;$(SolutionDir)libs\network\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;src;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;$(SolutionDir)3rd\protobuf-2.6.1\src\;$(SolutionDir)libs\pb\src;$(SolutionDir)libs\pb\include;$(SolutionDir)libs\network\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -145,7 +145,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\eventdispatch.h" />
+    <ClInclude Include="include\dispatcher.h" />
     <ClInclude Include="include\gmain.h" />
     <ClInclude Include="include\memorystream.h" />
     <ClInclude Include="include\networkinterface.h" />
@@ -156,8 +156,10 @@
     <ClInclude Include="include\singleton.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\networkinterface.cpp" />
     <ClCompile Include="src\packet.cpp" />
     <ClCompile Include="src\serverapp.cpp" />
+    <ClCompile Include="src\singleton.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

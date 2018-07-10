@@ -20,7 +20,7 @@ namespace network {
 
 	}
 
-	bool uv_tcp_server::initialize(const char* ip, const int port, bool ipv6)
+	bool uv_tcp_server::initialize(const std::string& ip, const int port, bool ipv6)
 	{
 		if (m_init)
 		{
@@ -114,10 +114,10 @@ namespace network {
 		return true;
 	}
 
-	int uv_tcp_server::bind_ipv4(const char* ip, const int port)
+	int uv_tcp_server::bind_ipv4(const std::string& ip, const int port)
 	{
 		struct sockaddr_in addr;
-		int r = uv_ip4_addr(ip, port, &addr);
+		int r = uv_ip4_addr(ip.c_str(), port, &addr);
 		if (r != 0)
 		{
 			return r;
@@ -129,10 +129,10 @@ namespace network {
 		}
 		return r;
 	}
-	int uv_tcp_server::bind_ipv6(const char* ip, const int port)
+	int uv_tcp_server::bind_ipv6(const std::string& ip, const int port)
 	{
 		struct sockaddr_in6 addr;
-		int r = uv_ip6_addr(ip, port, &addr);
+		int r = uv_ip6_addr(ip.c_str(), port, &addr);
 		if (r != 0)
 		{
 			return r;

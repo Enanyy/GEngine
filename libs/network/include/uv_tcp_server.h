@@ -21,7 +21,7 @@ namespace network {
 		uv_tcp_server(uv_service* service);
 		virtual ~uv_tcp_server();
 
-		bool					initialize(const char* ip, const int port, bool ipv6 = false);
+		bool					initialize(const std::string&  ip, const int port, bool ipv6 = false);
 		void					close();
 
 
@@ -41,8 +41,8 @@ namespace network {
 		static void on_close(uv_handle_t* handle);
 
 	private:
-		int bind_ipv4(const char* ip, const int port);
-		int bind_ipv6(const char* ip, const int port);
+		int bind_ipv4(const std::string& ip, const int port);
+		int bind_ipv6(const std::string& ip, const int port);
 		int listen(int backlog = 1024);
 
 

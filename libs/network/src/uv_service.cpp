@@ -42,15 +42,15 @@ namespace network {
 
 		for (auto it = m_connections.begin(); it != m_connections.end(); ++it)
 		{
-			auto client = it->second; 
-			client->close();
-			delete client;
+			auto con = it->second; 
+			con->close();
+			delete con;
 		}
 
 		m_connections.clear();
 	}
 
-	bool uv_service::initialize(const char* ip, const int tcp_port, const int udp_port, bool ipv6)
+	bool uv_service::initialize(const std::string&  ip, const int tcp_port, const int udp_port, bool ipv6)
 	{
 		if (m_init)
 		{
@@ -83,6 +83,11 @@ namespace network {
 		while (m_shutdown == false)
 		{
 			r = uv_run(m_loop, UV_RUN_NOWAIT);
+
+			if (m_handler)
+			{
+				m_handler->update();
+			}
 		}
 
 		return true;
@@ -186,6 +191,32 @@ namespace network {
 		{
 			return it->second;
 		}
+		return NULL;
+	}
+	uv_tcp_connection* uv_service::getconnection(const std::string&  ip, const int port)
+	{
+		auto it = m_connections.begin();
+		for (; it != m_connections.end(); ++it)
+		{
+			auto connection = it->second;
+			if (connection->ipv6())
+			{
+				struct sockaddr_in6 addr;
+				int length = sizeof(sockaddr_in6);
+				uv_tcp_getsockname(connection->session()->tcp(), (sockaddr*)&addr, &length);
+
+				
+			}
+			else
+			{
+				struct sockaddr_in addr;
+				int length = sizeof(sockaddr_in);
+				uv_tcp_getsockname(connection->session()->tcp(), (sockaddr*)&addr, &length);
+
+				
+			}
+		}
+
 		return NULL;
 	}
 }

@@ -13,7 +13,9 @@ public:
 
 	bool initialize() override;
 
-	void on_message(void*u, const int id, const char*data, const size_t length);
+	void on_message(const void* u, const int id, const void* data);
+
+	void on_event(const void* object, const int id, const void* data);
 
 private:
 
@@ -28,19 +30,26 @@ testapp::~testapp()
 }
 bool testapp::initialize()
 {
-	networkinterface::instance()->listen<testapp>(1, this, &testapp::on_message);
-	networkinterface::instance()->dispatch(NULL, 1, "aaa", 3);
+	networkinterface::listen<testapp>(1, this, &testapp::on_message);
+	networkinterface::dispatch(NULL, 1, "aaa");
 
-	networkinterface::instance()->unlisten<testapp>(1, this, &testapp::on_message);
-	networkinterface::instance()->dispatch(NULL, 1, "aaa", 3);
-	printf("%d \n", sizeof(time_t));
-	printf("%d \n", sizeof(size_t));
+	networkinterface::unlisten<testapp>(1, this, &testapp::on_message);
+	networkinterface::dispatch(NULL, 1, "aaa");
+	printf("%zd \n", sizeof(time_t));
+	printf("%zd \n", sizeof(size_t));
+
+	
 
 	return true;
 }
 
-void testapp::on_message(void*u, const int id, const char*data, const size_t length)
+void testapp::on_message(const void*u, const int id, const void*data)
 {
 	
+}
+
+void testapp::on_event(const void* object, const int id, const void* data)
+{
+
 }
 GENGINE_MAIN(testapp)

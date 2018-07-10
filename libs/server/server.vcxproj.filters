@@ -36,10 +36,10 @@
     <ClInclude Include="include\networkinterface.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\eventdispatch.h">
+    <ClInclude Include="include\platform.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\platform.h">
+    <ClInclude Include="include\dispatcher.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -48,6 +48,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\packet.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\networkinterface.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\singleton.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

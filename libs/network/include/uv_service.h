@@ -30,7 +30,7 @@ namespace network {
 		uv_service(uv_service_handler* handler);
 		~uv_service();
 
-		bool initialize(const char* ip, const int tcp_port, const int udp_port, bool ipv6 = false);
+		bool initialize(const std::string& ip, const int tcp_port, const int udp_port, bool ipv6 = false);
 
 		bool run() const;
 
@@ -52,6 +52,7 @@ namespace network {
 		
 		bool					registerconnection(uv_tcp_connection* client);
 		uv_tcp_connection*		getconnection(int id);
+		uv_tcp_connection*      getconnection(const std::string& ip, const int port);
 
 	private:
 		void on_newsession(uv_session* session);

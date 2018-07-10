@@ -18,6 +18,9 @@
     <ClCompile Include="src\login.pb.cc">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\server.pb.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\login.pb.h">
@@ -25,6 +28,9 @@
     </ClInclude>
     <ClInclude Include="include\pbmessage.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\server.pb.h">
+      <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

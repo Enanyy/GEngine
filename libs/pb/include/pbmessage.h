@@ -5,8 +5,11 @@ namespace pbmessage
 {
 	enum
 	{
-		CS_LOGIN_REQUEST = 100,
-		CS_LOGIN_RETURN = 101
+		SS_REGISTER_REQUEST			= 1,
+		SS_REGISTER_RETURN			= 2,
+
+		CS_LOGIN_REQUEST			= 100,
+		CS_LOGIN_RETURN				= 101
 	};
 }
 
