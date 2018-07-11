@@ -8,8 +8,8 @@ class loginapp:public serverapp,
 			   public singleton<loginapp>
 {
 public:
-	loginapp();
-	~loginapp();
+	loginapp(int id, serverapp_type type);
+	virtual ~loginapp();
 	
 
 private:

@@ -1,6 +1,6 @@
 #include "loginapp.h"
 
-loginapp::loginapp()
+loginapp::loginapp(int id, serverapp_type type):serverapp(id,type)
 {
 }
 

@@ -115,7 +115,7 @@ namespace network {
 			
 			if (m_handler)
 			{
-				m_handler->on_removesession(session);
+				m_handler->on_closesession(session);
 			}
 
 			delete session;

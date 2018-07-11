@@ -1,6 +1,6 @@
 #include "gatewayapp.h"
 
-gatewayapp::gatewayapp()
+gatewayapp::gatewayapp(int id, serverapp_type type) :serverapp(id, type)
 {
 }
 

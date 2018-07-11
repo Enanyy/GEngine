@@ -8,8 +8,8 @@ class logicapp :public serverapp,
 				public singleton<logicapp>
 {
 public:
-	logicapp();
-	~logicapp();
+	logicapp(int id, serverapp_type type);
+	virtual ~logicapp();
 
 
 private:

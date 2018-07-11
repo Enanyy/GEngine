@@ -8,8 +8,8 @@ class gatewayapp :public serverapp,
 			      public singleton<gatewayapp>
 {
 public:
-	gatewayapp();
-	~gatewayapp();
+	gatewayapp(int id, serverapp_type type);
+	virtual~gatewayapp();
 
 
 private:

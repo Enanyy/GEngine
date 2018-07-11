@@ -17,7 +17,7 @@ namespace network {
 
 	protected:
 		virtual void on_newsession(uv_tcp_session* session) = 0;
-		virtual void on_removesession(uv_tcp_session* session) = 0;
+		virtual void on_closesession(uv_tcp_session* session) = 0;
 		virtual void on_tcpreceive(uv_tcp_session* session, char* data, size_t length) = 0;
 		virtual void on_udpreceive(sockaddr_in* addr, char* data, size_t length) = 0;
 

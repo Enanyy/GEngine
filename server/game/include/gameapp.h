@@ -8,8 +8,8 @@ class gameapp :public serverapp,
 			   public singleton<gameapp>
 {
 public:
-	gameapp();
-	~gameapp();
+	gameapp(int id, serverapp_type type);
+	virtual~gameapp();
 
 
 private:

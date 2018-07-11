@@ -8,8 +8,8 @@ class dbapp :public serverapp,
 	public singleton<dbapp>
 {
 public:
-	dbapp();
-	~dbapp();
+	dbapp(int id, serverapp_type type);
+	virtual~dbapp();
 
 
 private:
