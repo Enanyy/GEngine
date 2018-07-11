@@ -16,9 +16,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "server", "server", "{3D9D98D1-254B-4E6E-844F-1B1CC2A84479}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "server", "libs\server\server.vcxproj", "{D5A4199B-2D2A-4D39-992D-3235640391FA}"
-	ProjectSection(ProjectDependencies) = postProject
-		{13CC6679-5C08-458D-AE11-EF059477986D} = {13CC6679-5C08-458D-AE11-EF059477986D}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "network", "libs\network\network.vcxproj", "{13CC6679-5C08-458D-AE11-EF059477986D}"
 	ProjectSection(ProjectDependencies) = postProject

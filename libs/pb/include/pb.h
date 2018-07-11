@@ -1,7 +1,11 @@
 #ifndef _PB_MESSAGE_H_
 #define _PB_MESSAGE_H_
 
-namespace pbmessage
+/*
+所有网络消息ID定义在这里
+*/
+
+namespace pb
 {
 	enum
 	{

@@ -6,6 +6,8 @@
 #include "packet.h"
 #include "networkinterface.h"
 #include "event.h"
+#include "pb.h"
+
 using namespace network;
 
 enum serverapp_type
@@ -49,7 +51,15 @@ protected:
 	virtual void on_tcpreceive(uv_tcp_session* session, char* data, size_t length);
 	virtual void on_udpreceive(sockaddr_in* addr, char* data, size_t length);
 
-	virtual void on_registerserver(uv_tcp_session* session,packet*data);
+protected:
+	/*
+	别的服务器请求注册到本服务器
+	*/
+	virtual void on_registerserver_request(const uv_tcp_session* session, const int id, const packet*data);
+	/*
+	请求注册到别的服务器的结果
+	*/
+	virtual void on_registerserver_return(const uv_tcp_session* session, const int id, const packet*data);
 
 	virtual bool initialize();
 	virtual void update();

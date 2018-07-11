@@ -26,11 +26,11 @@
     <ClInclude Include="src\login.pb.h">
       <Filter>源文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\pbmessage.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="src\server.pb.h">
       <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pb.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -31,7 +31,7 @@ class packet: public memorystream
         int                 id();
 		
 		/*
-		*return bodylength
+		 return bodylength
 		*/
         size_t              body(std::string &data);
 		size_t				bodylength();

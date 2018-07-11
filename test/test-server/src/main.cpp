@@ -1,7 +1,7 @@
 #include "gmain.h"
 #include "serverapp.h"
 #include "singleton.h"
-#include "pbmessage.h"
+#include "pb.h"
 #include "server.pb.h"
 #include <time.h>
 
@@ -14,7 +14,7 @@ public:
 
 	bool initialize() override;
 
-	void on_message(const void* u, const int id, const void* data);
+	void on_message(const uv_tcp_session* u, const int id, const packet* data);
 
 	void on_event(const void* object, const int id, const void* data);
 
@@ -31,19 +31,6 @@ testapp::~testapp()
 }
 bool testapp::initialize()
 {
-	networkinterface::listen(1, this, &testapp::on_message);
-	networkinterface::dispatch(NULL, 1, "aaa");
-
-	networkinterface::unlisten(1, this, &testapp::on_message);
-	networkinterface::dispatch(NULL, 1, "aaa");
-	printf("%zd \n", sizeof(time_t));
-	printf("%zd \n", sizeof(size_t));
-
-	event::listen(1, this, &testapp::on_event);
-	event::dispatch(this, 1, "aaaaa");
-	event::unlisten(1, this, &testapp::on_event);
-	event::dispatch(this, 1, "aaaaa");
-
 	packet p;
 	p.append<int>(10);
 	p.append<float>(45.0);
@@ -110,13 +97,26 @@ bool testapp::initialize()
 
 	printf("id= %d,type= %d,name=%s,ip=%s,port=%d\n", ret.info().id(), ret.info().type(), ret.info().name(), ret.info().ip(), ret.info().port());
 
+
+	networkinterface::listen(1, this, &testapp::on_message);
+	networkinterface::dispatch(NULL, 1, &p);
+
+	networkinterface::unlisten(1, this, &testapp::on_message);
+	networkinterface::dispatch(NULL, 1, &p);
+
+
+	event::listen(1, this, &testapp::on_event);
+	event::dispatch(this, 1, "aaaaa");
+	event::unlisten(1, this, &testapp::on_event);
+	event::dispatch(this, 1, "aaaaa");
+
 	return true;
 }
 
-void testapp::on_message(const void*u, const int id, const void*data)
+void testapp::on_message(const uv_tcp_session* u, const int id, const packet* data)
 {
-	char* str = (char*)data;
-	printf("%s\n", str);
+	
+	printf("%d\n", data->size());
 }
 
 void testapp::on_event(const void* object, const int id, const void* data)
