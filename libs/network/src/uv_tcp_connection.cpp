@@ -5,81 +5,65 @@ namespace network
 	uv_tcp_connection::uv_tcp_connection(uv_service* service):
 		m_service(service),
 		m_session(NULL),
-		m_init(false),
 		m_ipv6(false),
-		m_connect(false)
+		m_connectcallback(NULL),
+		m_status(-1)
 	{
-		
+		m_session = new uv_tcp_session(m_service->generateid());
 	}
 	uv_tcp_connection:: ~uv_tcp_connection()
 	{
 		close();
 	}
 
-	bool uv_tcp_connection::initialize()
-	{
-		if (m_init)
-		{
-			return true;
-		}
-		if (m_service == NULL)
-		{
-			ASSERT(m_service != NULL);
-			return false;
-		}
-
-		m_session = new uv_tcp_session(m_service->gen_sessionid());
-
-		int r = uv_tcp_init(m_service->loop(), m_session->tcp());
-		if (r != 0)
-		{
-			ASSERT(r == 0);
-			return false;
-		}
-		
-		m_init = true;
-
-		return true;
-	}
-
 	void uv_tcp_connection::close()
 	{
-		if (uv_is_active((uv_handle_t*)m_session->tcp()))
-		{
-			uv_close((uv_handle_t*)m_session->tcp(), on_close);
-		}
-
-		m_connect = false;
-		m_init = false;
+		m_status = -1;
 		m_ipv6 = false;
-
+		m_connectcallback = NULL;
 		if (m_session)
 		{
+			if (uv_is_active((uv_handle_t*)m_session->tcp()))
+			{
+				uv_close((uv_handle_t*)m_session->tcp(), on_close);
+			}
+
 			m_session->close();
 			delete m_session;
 		}
 	}
 
 
-	bool uv_tcp_connection::connect(const char* ip, const int port, bool ipv6 )
+	bool uv_tcp_connection::connect(const std::string& ip, const int port, bool ipv6,connectcallback callback )
 	{
-		if (m_session == NULL)
+		if (m_service == NULL || m_session == NULL)
 		{
+			if (callback != NULL)
+			{
+				callback(this, false);
+			}
 			return false;
 		}
-
-		if (m_init == false)
+		if (is_connect())
 		{
-			return false;
+			if (callback != NULL)
+			{
+				callback(this, true);
+			}
+			return true;
 		}
 		
+		m_connectcallback = callback;
 		m_ipv6 = ipv6;
+
+		int r = uv_tcp_init(m_service->loop(), m_session->tcp());
+		ASSERT(r == 0);
 
 		struct sockaddr* addr = NULL;
 		if (m_ipv6)
 		{
 			struct sockaddr_in addr4;
-			int r = uv_ip4_addr(ip, port, &addr4);
+			 r = uv_ip4_addr(ip.c_str(), port, &addr4);
 			if (r != 0)
 			{
 				ASSERT(r == 0);
@@ -90,7 +74,7 @@ namespace network
 		else
 		{
 			struct sockaddr_in6 addr6;
-			int r = uv_ip6_addr(ip, port, &addr6);
+			r = uv_ip6_addr(ip.c_str(), port, &addr6);
 			if (r != 0)
 			{
 				ASSERT(r == 0);
@@ -117,8 +101,11 @@ namespace network
 
 	void uv_tcp_connection::disconnect()
 	{
-		uv_close((uv_handle_t*)m_session->tcp(), on_close);
-		m_connect = false;
+		if (uv_is_active((uv_handle_t*)m_session->tcp()))
+		{
+			uv_close((uv_handle_t*)m_session->tcp(), on_close);
+		}
+		m_status = false;
 	}
 
 
@@ -146,11 +133,10 @@ namespace network
 
 	void uv_tcp_connection::send(const char* data, const size_t length)
 	{
-		if (m_init == false || m_connect == false)
+		if (is_connect()==false)
 		{
 			return;
 		}
-
 
 		if (m_service == NULL || m_session == NULL)
 		{
@@ -184,21 +170,26 @@ namespace network
 		{
 			return;
 		}
-		uv_tcp_connection* con = (uv_tcp_connection*)req->data;
+		uv_tcp_connection* connection = (uv_tcp_connection*)req->data;
+		connection->m_status = status;
+
 		if (status == 0)
 		{
-			int r = uv_read_start((uv_stream_t*)con->session()->tcp(), on_alloc_buffer, on_receive);
+			int r = uv_read_start((uv_stream_t*)connection->session()->tcp(), on_alloc_buffer, on_receive);
 			if (r != 0)
 			{
 				ASSERT(r == 0);
-			}
-
-			con->m_connect = true;
+			}				
 		}
 		else
 		{
 			ASSERT(status == 0);
 		}	
+
+		if (connection->m_connectcallback != NULL)
+		{
+			connection->m_connectcallback(connection, status==0);
+		}
 	}
 
 	void uv_tcp_connection::on_receive(uv_stream_t* req, ssize_t nread, const uv_buf_t* buf)
@@ -250,9 +241,9 @@ namespace network
 	{	
 		assert(handle->data != nullptr);
 
-		uv_tcp_connection *con = (uv_tcp_connection *)handle->data;
+		uv_tcp_session *session = (uv_tcp_session *)handle->data;
 
-		*buf = con->session()->readbuf();
+		*buf = session->readbuf();
 	}
 
 	void uv_tcp_connection::on_close(uv_handle_t* handle)

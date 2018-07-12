@@ -5,7 +5,7 @@
 #include "nocopyable.h"
 #include "packet.h"
 #include "networkinterface.h"
-#include "event.h"
+#include "eventinterface.h"
 #include "pb.h"
 
 using namespace network;
@@ -42,13 +42,24 @@ public:
 	const int					id()const { return m_id; }
 	const serverapp_type		type()const { return m_type; }
 	const char*					name();
-
-	bool						registerserver(const std::string& ip, const int port);
+	/*
+	请求连接别的服务器
+	*/
+	bool						registerserver(const std::string& ip, const int port, const bool ipv6 =false, uv_tcp_connection::connectcallback callback = NULL);
 
 protected:
+	/*
+	有新的连接，可能是客户端，也有可能是别的服务器
+	*/
 	virtual void on_newsession(uv_tcp_session* session) ;
 	virtual void on_closesession(uv_tcp_session* session) ;
+	/*
+	通过tcp收到的包，包括客户端与服务器和服务器之间的消息
+	*/
 	virtual void on_tcpreceive(uv_tcp_session* session, char* data, size_t length);
+	/*
+	通过udp收到的包
+	*/
 	virtual void on_udpreceive(sockaddr_in* addr, char* data, size_t length);
 
 protected:

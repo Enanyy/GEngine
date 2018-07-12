@@ -41,7 +41,7 @@ void serverapp::on_tcpreceive(uv_tcp_session* session, char* data, size_t length
 	}
 
 	//·Ö·¢ÍøÂç°ü
-	//networkinterface::dispatch(this, pack.id(), &pack);
+	networkinterface::dispatch(session, pack.id(), &pack);
 }
 
 void serverapp::on_udpreceive(sockaddr_in* addr, char* data, size_t length)
@@ -66,24 +66,35 @@ void serverapp::update()
 {
 }
 
-bool serverapp::registerserver(const std::string&  ip, const int port)
+bool serverapp::registerserver(const std::string&  ip, const int port,const bool ipv6, uv_tcp_connection::connectcallback callback)
 {
-	uv_tcp_connection* connection = this->service()->get_connection(ip, port);
+	uv_tcp_connection* connection = this->service()->getconnection(ip, port);
 
-	if (connection)
+	if (connection )
 	{
-		return true;
+		if (connection->is_connect())
+		{
+			if (callback != NULL)
+			{
+				callback(connection, connection->is_connect());
+			}
+			return true;
+		}
+		else
+		{
+			return connection->connect(ip, port, ipv6, callback);
+		}
 	}
+	else
+	{
+		connection = new uv_tcp_connection(this->service());
 
-	pb::ss_register_request req;
+		this->service()->addconnection(connection);
 
-	req.mutable_info()->set_id(m_id);
-	req.mutable_info()->set_type(m_type);
-	req.mutable_info()->set_name(name());
-	req.mutable_info()->set_ip(ip);
-	req.mutable_info()->set_port(port);
-
-	return true;
+	    return 	connection->connect(ip, port, ipv6,callback);
+		
+	}
+	
 }
 void serverapp::on_registerserver_request(const uv_tcp_session* session, const int id, const packet*data)
 {

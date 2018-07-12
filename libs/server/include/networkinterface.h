@@ -31,12 +31,16 @@ class networkinterface : public nocopyable
 			}
 		}
 
-		bool is_type(const std::type_info& type)const { return typeid(T) == type; }
+		const bool is_type(const std::type_info& type)const { return typeid(T) == type; }
 
 
 
-		bool equals(const ireceiver* other)const
+		const bool equals(const ireceiver* other)const
 		{
+			if (other == NULL || other->is_type(typeid(T)) == false)
+			{
+				return false;
+			}
 			auto r = static_cast<const receiver<T>*>(other);
 			
 			return m_object == r->m_object &&m_id == r->m_id  && m_receiver == r->m_receiver;

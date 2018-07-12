@@ -13,8 +13,8 @@ public:
 	virtual ~ireceiver() {}
 
 	virtual void invoke(const void*, const int id, const void*) const = 0;
-	virtual bool is_type(const std::type_info&)const = 0;
-	virtual bool equals(const ireceiver* receiver)const = 0;
+	virtual const bool is_type(const std::type_info&)const = 0;
+	virtual const bool equals(const ireceiver* receiver)const = 0;
 
 };
 class dispatcher :public nocopyable
@@ -94,7 +94,7 @@ public:
 			auto iter = it->second.begin();
 			for (; iter != it->second.end(); ++iter)
 			{
-				auto* r = (*iter);
+				auto r = (*iter);
 				delete r;
 				r = NULL;
 			}

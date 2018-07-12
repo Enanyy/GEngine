@@ -42,7 +42,7 @@
     <ClInclude Include="include\dispatcher.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\event.h">
+    <ClInclude Include="include\eventinterface.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -59,7 +59,7 @@
     <ClCompile Include="src\singleton.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\event.cpp">
+    <ClCompile Include="src\eventinterface.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

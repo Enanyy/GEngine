@@ -5,6 +5,7 @@
 #include "uv.h"
 #include <string>
 #include <assert.h>
+#include <functional>
 #include "uv_net.h"
 #include "uv_service.h"
 
@@ -14,13 +15,14 @@ namespace network
 	class uv_tcp_session;
 	class uv_tcp_connection
 	{
-	
 	public:
+		
+		typedef std::function<void(const uv_tcp_connection*, const bool status)> connectcallback;
+		
 		uv_tcp_connection(uv_service* service);
 		virtual ~uv_tcp_connection();
 
-		bool initialize();
-		bool connect(const char* ip, const int port, bool ipv6 = false);
+		bool connect(const std::string& ip, const int port, bool ipv6 = false, connectcallback callback = NULL);
 		void disconnect();
 
 		void close();
@@ -33,7 +35,7 @@ namespace network
 		uv_service*				service() const { return m_service; }
 		uv_tcp_session*			session() const  { return m_session; }
 
-		const bool is_connect() const{ return m_connect; }
+		const bool is_connect() const{ return m_status == 0; }
 		const bool is_ipv6() { return m_ipv6; }
 	
 	private:
@@ -51,11 +53,10 @@ namespace network
 		uv_tcp_session*			m_session;
 		uv_connect_t			m_tcp_connect;
 	
-
+		connectcallback			m_connectcallback;
 		
-		bool					m_init;
 		bool					m_ipv6;
-		bool					m_connect;
+		int 					m_status;
 	};
 }
 

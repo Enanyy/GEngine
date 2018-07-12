@@ -105,10 +105,10 @@ bool testapp::initialize()
 	networkinterface::dispatch(NULL, 1, &p);
 
 
-	event::listen(1, this, &testapp::on_event);
-	event::dispatch(this, 1, "aaaaa");
-	event::unlisten(1, this, &testapp::on_event);
-	event::dispatch(this, 1, "aaaaa");
+	eventinterface::listen(1, this, &testapp::on_event);
+	eventinterface::dispatch(this, 1, "aaaaa");
+	eventinterface::unlisten(1, this, &testapp::on_event);
+	eventinterface::dispatch(this, 1, "aaaaa");
 
 	return true;
 }
@@ -116,10 +116,10 @@ bool testapp::initialize()
 void testapp::on_message(const uv_tcp_session* u, const int id, const packet* data)
 {
 	
-	printf("%d\n", data->size());
+	printf("packet size =%d\n", data->size());
 }
 
-void testapp::on_event(const void* object, const int id, const void* data)
+void testapp::on_event(const void* sender, const int id, const void* data)
 {
 	char* str = (char*)data;
 	printf("%s\n", str);

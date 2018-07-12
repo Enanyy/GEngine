@@ -104,9 +104,9 @@ namespace network {
 		return true;
 	}
 
-	void uv_service::close_session(int id)
+	void uv_service::closesession(int id)
 	{
-		auto session = get_session(id);
+		auto session = getsession(id);
 		if (session)
 		{
 			session->close();
@@ -122,7 +122,7 @@ namespace network {
 		}
 	}
 
-	uv_tcp_session* uv_service::get_session(int id)
+	uv_tcp_session* uv_service::getsession(int id)
 	{
 		auto it = m_sessions.begin();
 		for (; it != m_sessions.end(); ++it)
@@ -181,7 +181,7 @@ namespace network {
 		printf("%s.\n", m_error.c_str());
 	}
 
-	bool uv_service::add_connection(uv_tcp_connection* connection)
+	bool uv_service::addconnection(uv_tcp_connection* connection)
 	{
 		if (connection == NULL || connection->session()==NULL)
 		{
@@ -201,7 +201,7 @@ namespace network {
 		return true;
 	}
 
-	uv_tcp_connection* uv_service::get_connection(int id)
+	uv_tcp_connection* uv_service::getconnection(int id)
 	{
 		auto it = m_connections.find(id);
 
@@ -211,8 +211,15 @@ namespace network {
 		}
 		return NULL;
 	}
-	uv_tcp_connection* uv_service::get_connection(const std::string&  ip, const int port)
+	uv_tcp_connection* uv_service::getconnection(const std::string&  ip, const int port)
 	{
+		unsigned long address;
+	
+		if (string2ip(ip, address) != 0)
+		{
+			return NULL;
+		}
+
 		auto it = m_connections.begin();
 		for (; it != m_connections.end(); ++it)
 		{
@@ -221,16 +228,29 @@ namespace network {
 			{
 				struct sockaddr_in6 addr;
 				int length = sizeof(sockaddr_in6);
-				uv_tcp_getsockname(connection->session()->tcp(), (sockaddr*)&addr, &length);
-
+				int r = uv_tcp_getsockname(connection->session()->tcp(), (sockaddr*)&addr, &length);
+				if (r == 0)
+				{
+					unsigned long S_addr = *(unsigned long*)addr.sin6_addr.u.Byte;
+					if (address == S_addr && htons(port) == addr.sin6_port)
+					{
+						return connection;
+					}
+				}
 				
 			}
 			else
 			{
 				struct sockaddr_in addr;
 				int length = sizeof(sockaddr_in);
-				uv_tcp_getsockname(connection->session()->tcp(), (sockaddr*)&addr, &length);
-
+				int r = uv_tcp_getsockname(connection->session()->tcp(), (sockaddr*)&addr, &length);
+				if (r == 0)
+				{
+					if (address == addr.sin_addr.S_un.S_addr && htons(port) == addr.sin_port)
+					{
+						return connection;
+					}
+				}
 				
 			}
 		}

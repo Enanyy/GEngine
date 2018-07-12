@@ -9,8 +9,8 @@ namespace pb
 {
 	enum
 	{
-		SS_REGISTER_REQUEST			= 1,
-		SS_REGISTER_RETURN			= 2,
+		SS_REGISTER_REQUEST			= 1,	//向别的服务注册本服务器
+		SS_REGISTER_RETURN			= 2,	//向别的服务注册本服务器结果
 
 		CS_LOGIN_REQUEST			= 100,
 		CS_LOGIN_RETURN				= 101
