@@ -18,7 +18,7 @@ class packet: public memorystream
 
         static const unsigned int PACKET_SIZE = 64*1024;				//包默认初始化大小
 
-		static const unsigned int PACKET_VERSION = 1;					//当前版本号
+		static const		  int PACKET_VERSION = 1;					//当前版本号
     public:
 		packet();
 		packet(size_t size);
@@ -36,8 +36,8 @@ class packet: public memorystream
         size_t              body(std::string &data);
 		size_t				bodylength();
 		size_t				time();
-		size_t				version();
-		size_t				extra();
+		int					version();
+		int					extra();
 
 	public:
 		template<typename T> T read() 
