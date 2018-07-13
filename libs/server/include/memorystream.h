@@ -21,10 +21,8 @@ class memorystream
         
 		memorystream(size_t size):m_length(0)
         {
-            if(size)
-            {
-                m_data.reserve(size);
-            }
+			size = size > 0 ? size : DEFAULT_SIZE;
+            m_data.reserve(size);         
         }
 
         virtual ~memorystream()
@@ -129,7 +127,7 @@ class memorystream
             {
                 return 1;
             }
-			if (len > m_length)
+			if (len > m_length || offset + len > m_length)
 			{
 				return 2;
 			}
@@ -150,11 +148,11 @@ class memorystream
 			{
 				return 1;
 			}
-			if (len > m_length)
+			if (len > m_length || offset + len > m_length)
 			{
 				return 2;
 			}
-			dest.assign((char*)(data() + offset), len);
+			dest.assign((char*)(data() + offset), len + 1);
 
 			return 0;
 		}
