@@ -71,5 +71,68 @@ namespace network {
  } 		
 
 	
+	static unsigned long uv_tcp_get_ip(const uv_tcp_t* handle, const bool ipv6)
+	{
+		if (handle == nullptr)
+		{
+			return 0;
+		}
+
+		if (ipv6)
+		{
+			sockaddr_in6 addr6;
+			int namelen = sizeof(sockaddr_in6);
+			int r = uv_tcp_getsockname(handle, (sockaddr*)&addr6, &namelen);
+			if (r == 0)
+			{
+				return *((unsigned long*)addr6.sin6_addr.u.Byte);
+			}
+		}
+		else
+		{
+			sockaddr_in addr4;
+			int namelen = sizeof(sockaddr_in);
+			int r = uv_tcp_getsockname(handle, (sockaddr*)&addr4, &namelen);
+			if (r == 0)
+			{
+				return addr4.sin_addr.S_un.S_addr;
+			}
+		}
+		return 0;
+	}
+	static unsigned short uv_tcp_get_port(const uv_tcp_t* handle, const bool ipv6)
+	{
+		if (ipv6)
+		{
+			sockaddr_in6 addr6;
+			int namelen = sizeof(sockaddr_in6);
+			int r = uv_tcp_getsockname(handle, (sockaddr*)&addr6, &namelen);
+			if (r == 0)
+			{
+				return addr6.sin6_port;
+			}
+		}
+		else
+		{
+			sockaddr_in addr4;
+			int namelen = sizeof(sockaddr_in);
+			int r = uv_tcp_getsockname(handle, (sockaddr*)&addr4, &namelen);
+			if (r == 0)
+			{
+				return addr4.sin_port;
+			}
+		}
+		return 0;
+	}
+
+	static int uv_string2ip(std::string& ip, unsigned long& addr)
+	{
+
+	}
+
+	static int uv_ip2string(unsigned long& addr ,std::string& ip)
+	{
+
+	}
 }
 #endif // !_UV_NET_H_

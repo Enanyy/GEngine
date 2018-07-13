@@ -31,51 +31,11 @@ namespace network {
 
 	const unsigned long	uv_session::ip() const
 	{
-		if (m_ipv6)
-		{
-			sockaddr_in6 addr6;
-			int namelen = sizeof(sockaddr_in6);
-			int r = uv_tcp_getsockname(&m_tcp, (sockaddr*)&addr6, &namelen);
-			if (r==0)
-			{
-				return *((unsigned long*)addr6.sin6_addr.u.Byte);
-			}
-		}
-		else
-		{
-			sockaddr_in addr4;
-			int namelen = sizeof(sockaddr_in);
-			int r = uv_tcp_getsockname(&m_tcp, (sockaddr*)&addr4, &namelen);
-			if (r == 0)
-			{
-				return addr4.sin_addr.S_un.S_addr;
-			}
-		}
-		return 0;
+		return uv_tcp_get_ip(&m_tcp, m_ipv6);
 	}
 	const unsigned short uv_session::port()const
 	{
-		if (m_ipv6)
-		{
-			sockaddr_in6 addr6;
-			int namelen = sizeof(sockaddr_in6);
-			int r = uv_tcp_getsockname(&m_tcp, (sockaddr*)&addr6, &namelen);
-			if (r == 0)
-			{
-				return addr6.sin6_port;
-			}
-		}
-		else
-		{
-			sockaddr_in addr4;
-			int namelen = sizeof(sockaddr_in);
-			int r = uv_tcp_getsockname(&m_tcp, (sockaddr*)&addr4, &namelen);
-			if (r == 0)
-			{
-				return addr4.sin_port;
-			}
-		}
-		return 0;
+		return uv_tcp_get_port(&m_tcp, m_ipv6);
 	}
 
 	bool uv_session::no_delay(bool enable)
