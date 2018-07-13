@@ -28,6 +28,56 @@ namespace network {
 
 	
 	}
+
+	const unsigned long	uv_session::ip() const
+	{
+		if (m_ipv6)
+		{
+			sockaddr_in6 addr6;
+			int namelen = sizeof(sockaddr_in6);
+			int r = uv_tcp_getsockname(&m_tcp, (sockaddr*)&addr6, &namelen);
+			if (r==0)
+			{
+				return *((unsigned long*)addr6.sin6_addr.u.Byte);
+			}
+		}
+		else
+		{
+			sockaddr_in addr4;
+			int namelen = sizeof(sockaddr_in);
+			int r = uv_tcp_getsockname(&m_tcp, (sockaddr*)&addr4, &namelen);
+			if (r == 0)
+			{
+				return addr4.sin_addr.S_un.S_addr;
+			}
+		}
+		return 0;
+	}
+	const unsigned short uv_session::port()const
+	{
+		if (m_ipv6)
+		{
+			sockaddr_in6 addr6;
+			int namelen = sizeof(sockaddr_in6);
+			int r = uv_tcp_getsockname(&m_tcp, (sockaddr*)&addr6, &namelen);
+			if (r == 0)
+			{
+				return addr6.sin6_port;
+			}
+		}
+		else
+		{
+			sockaddr_in addr4;
+			int namelen = sizeof(sockaddr_in);
+			int r = uv_tcp_getsockname(&m_tcp, (sockaddr*)&addr4, &namelen);
+			if (r == 0)
+			{
+				return addr4.sin_port;
+			}
+		}
+		return 0;
+	}
+
 	bool uv_session::no_delay(bool enable)
 	{
 		int r = uv_tcp_nodelay(&m_tcp, enable ? 1 : 0);
@@ -51,7 +101,7 @@ namespace network {
 	}
 	bool uv_session::is_active()const
 	{
-		return uv_is_active((const uv_handle_t*)&m_tcp);
+		return uv_is_active((const uv_handle_t*)&m_tcp) != 0;
 	}
 
 	void uv_session::close()

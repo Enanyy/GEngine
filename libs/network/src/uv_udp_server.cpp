@@ -88,7 +88,7 @@ namespace network {
 
 	const bool uv_udp_server::is_active()
 	{
-		return uv_is_active((const uv_handle_t*)&m_handle);
+		return uv_is_active((const uv_handle_t*)&m_handle) != 0;
 	}
 
 	void uv_udp_server::send(const std::string& ip, const int port, const char* data, const size_t length)

@@ -57,7 +57,7 @@ void serverapp::on_newconnection(uv_session* connection)
 	cmd.mutable_info()->set_type(this->type());
 	cmd.mutable_info()->set_name(this->name());
 	//cmd.mutable_info()->set_ip(ip.c_str());
-	//cmd.mutable_info()->set_port(port);
+	//cmd.mutable_info()->set_port();
 
 	std::string proto;
 	cmd.SerializeToString(&proto);

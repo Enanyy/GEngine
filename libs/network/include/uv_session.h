@@ -14,6 +14,8 @@ namespace network {
 
 
 		const int						id() const { return m_id; }
+		const unsigned long				ip()const;
+		const unsigned short			port()const;
 
 		uv_service*						service()const { return m_service; }
 		

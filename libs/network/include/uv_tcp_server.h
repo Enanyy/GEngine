@@ -33,6 +33,9 @@ namespace network {
 		const bool				is_active();
 		const bool				is_ipv6()const { return m_ipv6; }
 
+		const unsigned long		ip()const;
+		const unsigned short	port()const;
+
 	protected:
 
 		static void on_accept(uv_stream_t* server, int status);
