@@ -22,9 +22,9 @@ class packet: public memorystream
     public:
 		packet();
 		packet(size_t size);
-		packet(char* data, size_t length);
+		packet(const char* data, size_t length);
 		packet(std::string& data);
-		packet(int id, char* body, size_t bodylength, int extra);
+		packet(int id, const char* body, size_t bodylength, int extra);
         virtual ~packet();
 
 		const bool          is_valid()const {return length() >= PACKET_HEAD_LENGTH;}

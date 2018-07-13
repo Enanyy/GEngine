@@ -8,7 +8,7 @@ class dbapp :public serverapp,
 	public singleton<dbapp>
 {
 public:
-	dbapp(int id, serverapp_type type);
+	dbapp(int id, serverapptype type);
 	virtual~dbapp();
 
 

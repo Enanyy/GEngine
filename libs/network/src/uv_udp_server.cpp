@@ -10,8 +10,8 @@ namespace network {
 		m_ipv6(false)
 	{
 		m_handle.data = this;
-		m_writebuf = uv_buf_init((char*)malloc(BUFFER_SIZE), BUFFER_SIZE);
-		m_readbuf = uv_buf_init((char*)malloc(BUFFER_SIZE), BUFFER_SIZE);
+		m_writebuf = uv_buf_init((char*)malloc(PACKET_BUFFER_SIZE), PACKET_BUFFER_SIZE);
+		m_readbuf = uv_buf_init((char*)malloc(PACKET_BUFFER_SIZE), PACKET_BUFFER_SIZE);
 	}
 	uv_udp_server:: ~uv_udp_server()
 	{
@@ -83,8 +83,15 @@ namespace network {
 
 	void uv_udp_server::close()
 	{
-		uv_close((uv_handle_t*)&m_handle, on_close);
+		if (is_active()) {
+			uv_close((uv_handle_t*)&m_handle, on_close);
+		}
 		m_init = false;
+	}
+
+	const bool uv_udp_server::is_active()
+	{
+		return uv_is_active((const uv_handle_t*)&m_handle);
 	}
 
 	void uv_udp_server::send(const std::string& ip, const int port, const char* data, const size_t length)

@@ -4,7 +4,7 @@
 #include "dispatcher.h"
 #include "packet.h"
 #include "nocopyable.h"
-#include "uv_tcp_session.h"
+#include "uv_session.h"
 
 using namespace network;
 class networkinterface : public nocopyable
@@ -13,7 +13,7 @@ class networkinterface : public nocopyable
 	class receiver : public ireceiver
 	{
 	public:
-		typedef void(T::*function)(const uv_tcp_session*, const int, const packet*);
+		typedef void(T::*function)(const uv_session*, const int, const packet*);
 
 		receiver( const int id, T* object, function func) : m_id(id), m_object(object),m_receiver(func) {}
 
@@ -27,7 +27,7 @@ class networkinterface : public nocopyable
 		{
 			if (id == m_id && m_object)
 			{
-				(m_object->*m_receiver)((const uv_tcp_session*)object, id, (const packet*)data);
+				(m_object->*m_receiver)((const uv_session*)object, id, (const packet*)data);
 			}
 		}
 
@@ -58,7 +58,7 @@ class networkinterface : public nocopyable
 public:
 	
 	template<typename T>
-	static bool listen(const int id, T* object, void (T::*func)(const uv_tcp_session*, const int, const packet*))
+	static bool listen(const int id, T* object, void (T::*func)(const uv_session*, const int, const packet*))
 	{
 		receiver<T>* rcv = new receiver<T>( id, object, func);
 		bool r = m_dispatcher.listen(id, rcv);
@@ -71,13 +71,13 @@ public:
 	}
 
 	template<typename T>
-	static void unlisten(const int id,  T* object,  void (T::*func)(const uv_tcp_session*, const int, const packet*))
+	static void unlisten(const int id,  T* object,  void (T::*func)(const uv_session*, const int, const packet*))
 	{ 
 		receiver<T> other(id, object, func);
 		m_dispatcher.unlisten(id, &other);
 	}
 
-	static void dispatch(const uv_tcp_session* object, const int id, const packet* data)
+	static void dispatch(const uv_session* object, const int id, const packet* data)
 	{
 		m_dispatcher.dispatch((const void*)object, id, (const void*)data);
 	}

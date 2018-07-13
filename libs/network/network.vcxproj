@@ -90,6 +90,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>include;src;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -104,6 +105,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)libs\network\include;$(SolutionDir)libs\network\src;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -120,6 +122,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>include;src;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -138,6 +141,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>include;src;$(SolutionDir)3rd\kcp\src;$(SolutionDir)3rd\libuv-v1.19.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -152,15 +156,13 @@
     <ClInclude Include="include\uv_net.h" />
     <ClInclude Include="include\uv_service.h" />
     <ClInclude Include="include\uv_service_handler.h" />
-    <ClInclude Include="include\uv_tcp_session.h" />
-    <ClInclude Include="include\uv_tcp_connection.h" />
+    <ClInclude Include="include\uv_session.h" />
     <ClInclude Include="include\uv_tcp_server.h" />
     <ClInclude Include="include\uv_udp_server.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\uv_service.cpp" />
-    <ClCompile Include="src\uv_tcp_session.cpp" />
-    <ClCompile Include="src\uv_tcp_connection.cpp" />
+    <ClCompile Include="src\uv_session.cpp" />
     <ClCompile Include="src\uv_tcp_server.cpp" />
     <ClCompile Include="src\uv_udp_server.cpp" />
   </ItemGroup>

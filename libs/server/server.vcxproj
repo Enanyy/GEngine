@@ -154,6 +154,7 @@
     <ClInclude Include="include\packet.h" />
     <ClInclude Include="include\platform.h" />
     <ClInclude Include="include\serverapp.h" />
+    <ClInclude Include="include\serverappinfo.h" />
     <ClInclude Include="include\singleton.h" />
   </ItemGroup>
   <ItemGroup>

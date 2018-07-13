@@ -29,6 +29,7 @@ namespace network {
 		uv_service*	service() const { return m_service; }
 
 		uv_udp_send_t& sendreq() { return m_sendreq; }
+		const bool				is_active();
 
 		bool set_broadcast(bool enable);
 

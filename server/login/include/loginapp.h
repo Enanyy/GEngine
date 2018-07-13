@@ -8,7 +8,7 @@ class loginapp:public serverapp,
 			   public singleton<loginapp>
 {
 public:
-	loginapp(int id, serverapp_type type);
+	loginapp(int id, serverapptype type);
 	virtual ~loginapp();
 	
 

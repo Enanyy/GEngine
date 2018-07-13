@@ -1,7 +1,7 @@
 #include "serverapp.h"
 #include "server.pb.h"
 
-serverapp::serverapp(int id, serverapp_type type):
+serverapp::serverapp(int id, serverapptype type):
 		   m_id(id),m_type(type <0 || type >APP_MAX ? APP_NONE : type)
 		  
 {
@@ -17,20 +17,20 @@ const char* serverapp::name()
 		m_type = APP_NONE;
 	}
 
-	return serverapp_name[m_type];
+	return serverappname[m_type];
 }
 
-void serverapp::on_newsession(uv_tcp_session* session)
+void serverapp::on_newsession(uv_session* session)
 {
 	
 }
 
-void serverapp::on_closesession(uv_tcp_session* session)
+void serverapp::on_closesession(uv_session* session)
 {
 
 }
 
-void serverapp::on_tcpreceive(uv_tcp_session* session, char* data, size_t length)
+void serverapp::on_tcpreceive(uv_session* session, char* data, size_t length)
 {
 	packet pack(data, length);
 
@@ -49,6 +49,30 @@ void serverapp::on_udpreceive(sockaddr_in* addr, char* data, size_t length)
 
 }
 
+void serverapp::on_newconnection(uv_session* connection)
+{
+
+	pb::ss_register_request cmd;
+	cmd.mutable_info()->set_id(this->id());
+	cmd.mutable_info()->set_type(this->type());
+	cmd.mutable_info()->set_name(this->name());
+	//cmd.mutable_info()->set_ip(ip.c_str());
+	//cmd.mutable_info()->set_port(port);
+
+	std::string proto;
+	cmd.SerializeToString(&proto);
+
+	packet buf(pb::SS_REGISTER_REQUEST, proto.c_str(), proto.size(), this->id());
+
+	this->service()->tcp()->send(connection, buf.data(), buf.length());
+
+}
+void serverapp::on_closeconnection(uv_session* connection)
+{
+
+}
+
+
 bool serverapp::initialize()
 {
 	networkinterface::listen(pb::SS_REGISTER_REQUEST, this, &serverapp::on_registerserver_request);
@@ -66,41 +90,38 @@ void serverapp::update()
 {
 }
 
-bool serverapp::registerserver(const std::string&  ip, const int port,const bool ipv6, uv_tcp_connection::connectcallback callback)
+bool serverapp::connectserver(const std::string&  ip, const int port, const bool ipv6)
 {
-	uv_tcp_connection* connection = this->service()->getconnection(ip, port);
+	uv_session* connection = this->service()->getconnection(ip, port);
 
 	if (connection )
 	{
-		if (connection->is_connect())
+		if (connection->is_active())
 		{
-			if (callback != NULL)
-			{
-				callback(connection, connection->is_connect());
-			}
 			return true;
 		}
 		else
 		{
-			return connection->connect(ip, port, ipv6, callback);
+			this->service()->closeconnection(connection->id());
 		}
 	}
-	else
+	
+	return this->service()->connect(ip, port, ipv6);
+
+}
+void serverapp::on_registerserver_request(const uv_session* session, const int id, const packet*data)
+{
+	if (session == NULL || data == NULL || id != pb::SS_REGISTER_REQUEST)
 	{
-		connection = new uv_tcp_connection(this->service());
-
-		this->service()->addconnection(connection);
-
-	    return 	connection->connect(ip, port, ipv6,callback);
-		
+		return;
 	}
 	
-}
-void serverapp::on_registerserver_request(const uv_tcp_session* session, const int id, const packet*data)
-{
-	
-}
-void serverapp::on_registerserver_return(const uv_tcp_session* session, const int id, const packet*data)
-{
 
+}
+void serverapp::on_registerserver_return(const uv_session* session, const int id, const packet*data)
+{
+	if (session == NULL || data == NULL || id != pb::SS_REGISTER_RETURN)
+	{
+		return;
+	}
 }

@@ -12,12 +12,12 @@ packet::packet(std::string& data)
 	clear();
 	append(data);
 }
-packet::packet(char* data, size_t length):memorystream(length), m_index(0)
+packet::packet(const char* data, size_t length):memorystream(length), m_index(0)
 {
 	clear();
 	append(data, length);
 }
-packet::packet(int id, char* body, size_t bodylength,int extra):memorystream(PACKET_HEAD_LENGTH + bodylength), m_index(0)
+packet::packet(int id,const char* body, size_t bodylength,int extra):memorystream(PACKET_HEAD_LENGTH + bodylength), m_index(0)
 {
 	clear();
 

@@ -119,10 +119,13 @@ namespace network {
 			}
 
 			delete session;
+			session = NULL;
 		}
+		
 	}
 
-	uv_tcp_session* uv_service::getsession(int id)
+
+	uv_session* uv_service::getsession(int id)
 	{
 		auto it = m_sessions.begin();
 		for (; it != m_sessions.end(); ++it)
@@ -135,7 +138,7 @@ namespace network {
 		return NULL;
 	}
 
-	void uv_service::on_newsession(uv_tcp_session* session)
+	void uv_service::on_newsession(uv_session* session)
 	{
 		printf("newsession = %d\n", session->id());
 		if (session == NULL)
@@ -158,7 +161,7 @@ namespace network {
 		}
 	}
 
-	void uv_service::on_tcpreceive(uv_tcp_session* session, char* data, size_t length)
+	void uv_service::on_tcpreceive(uv_session* session, char* data, size_t length)
 	{
 		if (m_handler)
 		{
@@ -181,27 +184,160 @@ namespace network {
 		printf("%s.\n", m_error.c_str());
 	}
 
-	bool uv_service::addconnection(uv_tcp_connection* connection)
+	bool uv_service::connect(const std::string& ip, const int port, bool ipv6 )
 	{
-		if (connection == NULL || connection->session()==NULL)
+		
+		uv_session*connection = new uv_session(this);
+
+		int r = uv_tcp_init(m_loop, connection->tcp());
+		ASSERT(r == 0);
+
+		struct sockaddr* addr = NULL;
+		if (ipv6)
 		{
+			struct sockaddr_in addr4;
+			r = uv_ip4_addr(ip.c_str(), port, &addr4);
+			if (r != 0)
+			{
+				connection->close();
+				delete connection;
+				connection = NULL;
+
+				ASSERT(r == 0);
+				return false;
+			}
+			addr = (struct sockaddr*)&addr4;
+		}
+		else
+		{
+			struct sockaddr_in6 addr6;
+			r = uv_ip6_addr(ip.c_str(), port, &addr6);
+			if (r != 0)
+			{
+				connection->close();
+				delete connection;
+				connection = NULL;
+
+				ASSERT(r == 0);
+				return false;
+			}
+			addr = (struct sockaddr*)&addr6;
+		}
+
+		m_connect.data = connection;
+
+
+		r = uv_tcp_connect(&m_connect, connection->tcp(), (const struct sockaddr*)&addr, on_connect);
+		if (r != 0)
+		{
+			connection->close();
+			delete connection;
+			connection = NULL;
+
+			ASSERT(r == 0);
 			return false;
 		}
 
-		int id = connection->session()->id();
+		int id = connection->id();
 
 		auto it = m_connections.find(id);
 		if (it != m_connections.end())
 		{
+			connection->close();
+			delete connection;
+			connection = NULL;
+
 			return false;
 		}
-		
+
 		m_connections.insert(std::make_pair(id, connection));
-	
+
+
 		return true;
 	}
 
-	uv_tcp_connection* uv_service::getconnection(int id)
+	void uv_service::on_connect(uv_connect_t* req, int status)
+	{
+		if (req->data == NULL)
+		{
+			return;
+		}
+		uv_session* connection = (uv_session*)req->data;
+		auto service = connection->service();
+
+
+		if (status == 0)
+		{
+			service->on_newconnection(connection);
+
+			int r = uv_read_start((uv_stream_t*)connection->tcp(),
+
+				[](uv_handle_t* hanle, size_t suggested_size, uv_buf_t* buf) {
+
+					assert(hanle->data != NULL);
+
+					uv_session* connection = (uv_session*)hanle->data;
+
+					*buf = connection->readbuf();
+				},
+
+				[](uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
+
+					if (handle->data == NULL)
+					{
+						return;
+					}
+
+					uv_session* connection = (uv_session*)handle->data;
+
+					if (connection == NULL || connection->service() == NULL)
+					{
+						return;
+					}
+					auto service = connection->service();
+
+					if (nread > 0)
+					{
+						service->on_tcpreceive(connection, buf->base, nread);
+					}
+					else if (nread == 0)
+					{
+						/* Everything OK, but nothing read. */
+					}
+					else
+					{
+						service->closeconnection(connection->id());
+
+						if (nread == UV_EOF) {
+
+							fprintf(stdout, "client %d disconnected, close it.\n", connection->id());
+						}
+						else if (nread == UV_ECONNRESET) {
+							fprintf(stdout, "client %d disconnected unusually, close it.\n", connection->id());
+						}
+						else
+						{
+							ASSERT(nread >= 0);
+						}
+					}
+				});
+
+
+			if (r != 0)
+			{
+				service->closeconnection(connection->id());
+				ASSERT(r == 0);
+			}
+		}
+		else
+		{
+			service->closeconnection(connection->id());
+			ASSERT(status == 0);
+		}
+
+	}
+
+	uv_session* uv_service::getconnection(int id)
 	{
 		auto it = m_connections.find(id);
 
@@ -211,11 +347,19 @@ namespace network {
 		}
 		return NULL;
 	}
-	uv_tcp_connection* uv_service::getconnection(const std::string&  ip, const int port)
+
+	uv_session* uv_service::getconnection(const std::string&  ip, const int port)
 	{
-		unsigned long address;
-	
-		if (string2ip(ip, address) != 0)
+		struct sockaddr_in6 addr6;
+		int r = uv_ip6_addr(ip.c_str(), port, &addr6);
+		if (r != 0)
+		{
+			return NULL;
+		}
+		
+		struct sockaddr_in addr4;
+		r = uv_ip4_addr(ip.c_str(), port, &addr4);
+		if (r != 0)
 		{
 			return NULL;
 		}
@@ -228,33 +372,58 @@ namespace network {
 			{
 				struct sockaddr_in6 addr;
 				int length = sizeof(sockaddr_in6);
-				int r = uv_tcp_getsockname(connection->session()->tcp(), (sockaddr*)&addr, &length);
+				int r = uv_tcp_getsockname(connection->tcp(), (sockaddr*)&addr, &length);
 				if (r == 0)
 				{
-					unsigned long S_addr = *(unsigned long*)addr.sin6_addr.u.Byte;
-					if (address == S_addr && htons(port) == addr.sin6_port)
+					if ( (*(unsigned long*)addr6.sin6_addr.u.Byte) == (*(unsigned long*)addr.sin6_addr.u.Byte) 
+						 && addr6.sin6_port == addr.sin6_port)
 					{
 						return connection;
 					}
-				}
-				
+				}			
 			}
 			else
 			{
 				struct sockaddr_in addr;
 				int length = sizeof(sockaddr_in);
-				int r = uv_tcp_getsockname(connection->session()->tcp(), (sockaddr*)&addr, &length);
+				int r = uv_tcp_getsockname(connection->tcp(), (sockaddr*)&addr, &length);
 				if (r == 0)
 				{
-					if (address == addr.sin_addr.S_un.S_addr && htons(port) == addr.sin_port)
+					if (addr4.sin_addr.S_un.S_addr == addr.sin_addr.S_un.S_addr 
+						&& addr4.sin_port == addr.sin_port)
 					{
 						return connection;
 					}
-				}
-				
+				}			
 			}
 		}
 
 		return NULL;
+	}
+
+	void uv_service::closeconnection(int id)
+	{
+		auto connection = getconnection(id);
+		if (connection)
+		{
+			connection->close();
+			m_connections.erase(id);
+
+			if (m_handler)
+			{
+				m_handler->on_closeconnection(connection);
+			}
+
+			delete connection;
+			connection = NULL;
+		}
+	}
+
+	void uv_service::on_newconnection(uv_session* connection)
+	{
+		if (m_handler)
+		{
+			m_handler->on_newconnection(connection);
+		}
 	}
 }

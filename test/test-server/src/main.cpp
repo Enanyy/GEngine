@@ -9,12 +9,12 @@ class testapp :public serverapp,
 	public singleton<testapp>
 {
 public:
-	testapp(int id, serverapp_type type);
+	testapp(int id, serverapptype type);
 	virtual ~testapp();
 
 	bool initialize() override;
 
-	void on_message(const uv_tcp_session* u, const int id, const packet* data);
+	void on_message(const uv_session* u, const int id, const packet* data);
 
 	void on_event(const void* object, const int id, const void* data);
 
@@ -22,7 +22,7 @@ private:
 
 };
 
-testapp::testapp(int id, serverapp_type type):serverapp(id,type)
+testapp::testapp(int id, serverapptype type):serverapp(id,type)
 {
 }
 
@@ -113,7 +113,7 @@ bool testapp::initialize()
 	return true;
 }
 
-void testapp::on_message(const uv_tcp_session* u, const int id, const packet* data)
+void testapp::on_message(const uv_session* u, const int id, const packet* data)
 {
 	
 	printf("packet size =%d\n", data->size());

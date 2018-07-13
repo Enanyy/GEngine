@@ -8,7 +8,7 @@ class gatewayapp :public serverapp,
 			      public singleton<gatewayapp>
 {
 public:
-	gatewayapp(int id, serverapp_type type);
+	gatewayapp(int id, serverapptype type);
 	virtual~gatewayapp();
 
 

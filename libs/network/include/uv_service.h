@@ -6,16 +6,15 @@
 
 #include "uv.h"
 #include "ikcp.h"
-#include "uv_tcp_session.h"
+#include "uv_session.h"
 #include "uv_tcp_server.h"
 #include "uv_udp_server.h"
-#include "uv_tcp_connection.h"
 #include "uv_service_handler.h"
 
 namespace network {
 
 	class uv_service_handler;
-	class uv_tcp_session;
+	class uv_session;
 	class uv_tcp_server;
 	class uv_udp_server;
 	class uv_tcp_connection;
@@ -24,6 +23,7 @@ namespace network {
 	{
 		friend class uv_tcp_server;
 		friend class uv_udp_server;
+		friend class uv_session;
 		friend class uv_tcp_connection;
 
 	public:
@@ -36,11 +36,10 @@ namespace network {
 
 		void shutdown();
 
-		uv_tcp_session*			getsession(int id);
+		uv_session*				getsession(int id);
 		void					closesession(int id);
 		int						generateid() { static int id = 0; return ++id; }
 
-	
 		void					error(int status);
 		const std::string&		error() const { return m_error; }
 
@@ -50,14 +49,20 @@ namespace network {
 		uv_tcp_server*			tcp()	{ return m_tcp; }
 		uv_udp_server*			udp()	{ return m_udp; }
 		
-		bool					addconnection(uv_tcp_connection* connection);
-		uv_tcp_connection*		getconnection(int id);
-		uv_tcp_connection*      getconnection(const std::string& ip, const int port);
+		bool					connect(const std::string& ip, const int port, bool ipv6 = false);
+		uv_session*				getconnection(int id);
+		uv_session*				getconnection(const std::string& ip, const int port);
+		void					closeconnection(int id);
 
 	private:
-		void on_newsession(uv_tcp_session* session);
-		void on_tcpreceive(uv_tcp_session* session, char* data, size_t length);
+		void on_newsession(uv_session* session);
+		void on_tcpreceive(uv_session* session, char* data, size_t length);
 		void on_udpreceive(sockaddr_in* addr, char* data, size_t length);
+
+		void on_newconnection(uv_session* session);
+
+	private:
+		static void on_connect(uv_connect_t* req, int status);
 
 	private:
 		uv_service_handler*					m_handler;
@@ -66,10 +71,12 @@ namespace network {
 		uv_udp_server*						m_udp;
 
 		//本服务器与别的服务器的连接
-		std::map<int,uv_tcp_connection*>	m_connections;
+		std::map<int,uv_session*>			m_connections;
+		uv_connect_t						m_connect;
+
 
 		//客户端（或别的服务器）与本服务器的连接
-		std::map<int, uv_tcp_session*>		m_sessions;
+		std::map<int, uv_session*>			m_sessions;
 		std::string							m_error;
 		bool								m_shutdown;
 		bool								m_init;

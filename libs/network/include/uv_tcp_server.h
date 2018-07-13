@@ -12,24 +12,25 @@
 namespace network {
 
 	class uv_service;
-	class uv_tcp_session;
+	class uv_session;
 	class uv_tcp_server
 	{
 
 	public:
+
 		uv_tcp_server(uv_service* service);
 		virtual ~uv_tcp_server();
 
 		bool					initialize(const std::string&  ip, const int port, bool ipv6 = false);
 		void					close();
 
-
-		virtual void			send(uv_tcp_session* session, const char* data, const size_t length);
+		virtual void			send(uv_session* session, const char* data, const size_t length);
 		bool					no_delay(bool enable);
 		bool					keep_alive(int enable, unsigned int delay);
 
 		uv_service*				service() const { return m_service; }
 
+		const bool				is_active();
 		const bool				is_ipv6()const { return m_ipv6; }
 
 	protected:
@@ -50,6 +51,7 @@ namespace network {
 	private:
 		uv_service*						m_service;
 		uv_tcp_t						m_handle;
+
 		bool							m_init;
 		bool							m_ipv6;
 	};
