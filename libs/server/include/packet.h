@@ -35,7 +35,7 @@ class packet: public memorystream
 		*/
         size_t              body(std::string &data);
 		size_t				bodylength();
-		size_t				time();
+		time_t				time();
 		int					version();
 		int					extra();
 
