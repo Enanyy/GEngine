@@ -64,8 +64,7 @@ public:
 		bool r = m_dispatcher.listen(id, rcv);
 		if (r == false)
 		{
-			delete rcv;
-			rcv = NULL;
+			SAFE_DELETE(rcv);
 		}
 		return r;
 	}

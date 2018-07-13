@@ -18,11 +18,8 @@ namespace network {
 		m_init = false;
 		m_ipv6 = false;
 
-		free(m_writebuf.base);
-		free(m_readbuf.base);
-
-		m_writebuf.base = nullptr;
-		m_readbuf.base = nullptr;
+		SAFE_FREE(m_writebuf.base);
+		SAFE_FREE(m_readbuf.base);
 
 		m_writebuf.len = 0;
 		m_readbuf.len = 0;
@@ -243,9 +240,6 @@ namespace network {
 	}
 	void uv_udp_server::on_close(uv_handle_t* handle)
 	{
-		if (handle)
-		{
-			free(handle);
-		}
+		SAFE_FREE(handle);
 	}
 }

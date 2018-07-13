@@ -186,13 +186,13 @@ namespace network {
 			return;
 		}
 
-		uv_session* session = new uv_session(server->service());
+		uv_session* session = new uv_session(server->service(), server->is_ipv6());
 
 
 		int r = uv_tcp_init(server->service()->loop(), session->tcp());
 		if (r != 0)
 		{
-			delete session;
+			SAFE_DELETE(session);
 			ASSERT(r == 0);
 			return;
 		}
@@ -202,7 +202,7 @@ namespace network {
 		{
 			uv_close((uv_handle_t*)session->tcp(), NULL);
 
-			delete session;
+			SAFE_DELETE(session);
 
 			ASSERT(r != 0);
 
@@ -241,6 +241,8 @@ namespace network {
 		}
 		else
 		{
+			service->closesession(session->id());
+
 			if (nread == UV_EOF) {
 
 				fprintf(stdout, "client %d disconnected, close it.\n", session->id());
@@ -252,7 +254,6 @@ namespace network {
 			{
 				ASSERT(nread >= 0);
 			}
-			service->closesession(session->id());
 		}
 
 	}
@@ -273,8 +274,6 @@ namespace network {
 
 	void  uv_tcp_server::on_close(uv_handle_t* handle)
 	{
-		if (handle) {
-			free(handle);
-		}
+		SAFE_FREE(handle);
 	}
 }

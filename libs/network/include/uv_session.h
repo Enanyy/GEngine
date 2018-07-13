@@ -9,7 +9,7 @@ namespace network {
 	{
 	public:
 	
-		uv_session(uv_service* service);
+		uv_session(uv_service* service, bool ipv6);
 		virtual ~uv_session();
 
 
@@ -29,6 +29,7 @@ namespace network {
 		bool					keep_alive(int enable, unsigned int delay);
 		bool					is_active()const;
 		bool					is_ipv6()const { return m_ipv6; }
+
 		void					close();
 
 

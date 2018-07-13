@@ -5,6 +5,7 @@
 #include <map>
 #include <list>
 #include "nocopyable.h"
+#include "platform.h"
 
 class ireceiver
 {

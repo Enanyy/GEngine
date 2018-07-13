@@ -2,6 +2,13 @@
 #ifndef _PLATFORM_H_
 #define _PLATFORM_H_
 
+#ifndef SAFE_DELETE
+#define SAFE_DELETE(p){if(p){delete p;p = NULL;}}			
+#endif // !SAFE_DELETE
+#ifndef SAFE_FREE
+#define SAFE_FREE(p)   {if(p){free(p);p = NULL;}}
+#endif // !SAFE_FREE(p)
+
 #ifdef _MSC_VER
 typedef signed __int64											int64;
 typedef signed __int32											int32;

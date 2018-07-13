@@ -2,10 +2,11 @@
 #include "uv_net.h"
 namespace network {
 
-	uv_session::uv_session(uv_service* service) :
+	uv_session::uv_session(uv_service* service, bool ipv6) :
 		m_service(service),
 		m_tcp(),
-		m_id(service->generateid())
+		m_id(service->generateid()),
+		m_ipv6(ipv6)
 	{
 		
 		m_tcp.data = this;
@@ -22,11 +23,9 @@ namespace network {
 			close();
 		}
 
-		free(m_readbuf.base);
-		free(m_writebuf.base);
-	
-		m_readbuf.base = NULL;
-		m_writebuf.base = NULL;
+		SAFE_FREE(m_readbuf.base);
+		SAFE_FREE(m_writebuf.base);
+
 	
 	}
 	bool uv_session::no_delay(bool enable)
@@ -66,9 +65,7 @@ namespace network {
 
 	void uv_session::on_close(uv_handle_t* handle)
 	{
-		if (handle != NULL) {
+		SAFE_FREE(handle);
 		
-			free(handle);
-		}
 	}
 }

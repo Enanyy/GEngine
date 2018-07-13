@@ -70,7 +70,7 @@ namespace network {
 		uv_tcp_server*						m_tcp;
 		uv_udp_server*						m_udp;
 
-		//本服务器与别的服务器的连接
+		//本服务器与别的服务器的连接（本服务器是客户端）
 		std::map<int,uv_session*>			m_connections;
 		uv_connect_t						m_connect;
 

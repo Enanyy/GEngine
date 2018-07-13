@@ -27,24 +27,23 @@ namespace network {
 		m_tcp->close();
 		m_udp->close();
 	
+		SAFE_DELETE(m_tcp);
+		SAFE_DELETE(m_udp);
 
-		delete m_tcp;
-		delete m_udp;
-		m_tcp = NULL;
-		m_udp = NULL;
+	
 
 		for (auto it = m_sessions.begin(); it != m_sessions.end(); ++it)
 		{
 			auto session = it->second;
 			session->close();
-			delete session;
+			SAFE_DELETE(session);
 		}
 
 		for (auto it = m_connections.begin(); it != m_connections.end(); ++it)
 		{
 			auto con = it->second; 
 			con->close();
-			delete con;
+			SAFE_DELETE(con);
 		}
 
 		m_connections.clear();
@@ -118,8 +117,7 @@ namespace network {
 				m_handler->on_closesession(session);
 			}
 
-			delete session;
-			session = NULL;
+			SAFE_DELETE(session);
 		}
 		
 	}
@@ -187,7 +185,7 @@ namespace network {
 	bool uv_service::connect(const std::string& ip, const int port, bool ipv6 )
 	{
 		
-		uv_session*connection = new uv_session(this);
+		uv_session*connection = new uv_session(this,ipv6);
 
 		int r = uv_tcp_init(m_loop, connection->tcp());
 		ASSERT(r == 0);
@@ -200,8 +198,7 @@ namespace network {
 			if (r != 0)
 			{
 				connection->close();
-				delete connection;
-				connection = NULL;
+				SAFE_DELETE(connection);
 
 				ASSERT(r == 0);
 				return false;
@@ -215,8 +212,8 @@ namespace network {
 			if (r != 0)
 			{
 				connection->close();
-				delete connection;
-				connection = NULL;
+				SAFE_DELETE(connection);
+			
 
 				ASSERT(r == 0);
 				return false;
@@ -231,27 +228,12 @@ namespace network {
 		if (r != 0)
 		{
 			connection->close();
-			delete connection;
-			connection = NULL;
+			SAFE_DELETE(connection);
+
 
 			ASSERT(r == 0);
 			return false;
 		}
-
-		int id = connection->id();
-
-		auto it = m_connections.find(id);
-		if (it != m_connections.end())
-		{
-			connection->close();
-			delete connection;
-			connection = NULL;
-
-			return false;
-		}
-
-		m_connections.insert(std::make_pair(id, connection));
-
 
 		return true;
 	}
@@ -268,6 +250,7 @@ namespace network {
 
 		if (status == 0)
 		{
+			//连接成功
 			service->on_newconnection(connection);
 
 			int r = uv_read_start((uv_stream_t*)connection->tcp(),
@@ -326,12 +309,16 @@ namespace network {
 			if (r != 0)
 			{
 				service->closeconnection(connection->id());
+
 				ASSERT(r == 0);
 			}
 		}
 		else
 		{
-			service->closeconnection(connection->id());
+			connection->close();
+			SAFE_DELETE(connection);
+
+			
 			ASSERT(status == 0);
 		}
 
@@ -414,13 +401,23 @@ namespace network {
 				m_handler->on_closeconnection(connection);
 			}
 
-			delete connection;
-			connection = NULL;
+			SAFE_DELETE(connection);
+
 		}
 	}
 
 	void uv_service::on_newconnection(uv_session* connection)
 	{
+		if (connection == NULL)
+		{
+			return;
+		}
+
+		if (m_connections.find(connection->id()) == m_connections.end())
+		{
+			m_connections.insert(std::make_pair(connection->id(), connection));
+		}
+
 		if (m_handler)
 		{
 			m_handler->on_newconnection(connection);

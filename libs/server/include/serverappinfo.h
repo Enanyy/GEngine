@@ -49,7 +49,7 @@ struct serverappinfo
 	int					id;
 	serverapptype		type;
 	serverappstate		state;
-	uv_session*			connection;
+	uv_session*			session;
 	std::string			ip;
 	int					port;
 
