@@ -94,7 +94,7 @@ class memorystream
 
         void append(const void* data, size_t size)
         {
-            if(data == NULL)
+            if(data == nullptr)
             {
                 return;
             }

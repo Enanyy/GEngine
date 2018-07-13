@@ -18,8 +18,8 @@ class networkinterface : public nocopyable
 		receiver( const int id, T* object, function func) : m_id(id), m_object(object),m_receiver(func) {}
 
 		virtual ~receiver() {
-			m_object = NULL;
-			m_receiver = NULL;
+			m_object = nullptr;
+			m_receiver = nullptr;
 		}
 
 
@@ -37,7 +37,7 @@ class networkinterface : public nocopyable
 
 		const bool equals(const ireceiver* other)const
 		{
-			if (other == NULL || other->is_type(typeid(T)) == false)
+			if (other == nullptr || other->is_type(typeid(T)) == false)
 			{
 				return false;
 			}

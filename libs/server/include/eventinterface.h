@@ -17,8 +17,8 @@ class eventinterface : public nocopyable
 		receiver( const int id, T* object, function func) : m_id(id), m_object(object), m_receiver(func) {}
 
 		virtual ~receiver() {
-			m_object = NULL;
-			m_receiver = NULL;
+			m_object = nullptr;
+			m_receiver = nullptr;
 		}
 
 
@@ -34,7 +34,7 @@ class eventinterface : public nocopyable
 
 		const bool equals(const ireceiver* other)const
 		{
-			if (other == NULL || other->is_type(typeid(T)) ==false)
+			if (other == nullptr || other->is_type(typeid(T)) ==false)
 			{
 				return false;
 			}
@@ -60,7 +60,7 @@ public:
 		bool r = m_dispatcher.listen(id, rcv);
 		if (r == false)
 		{
-			SAFE_DELETE(r);
+			SAFE_DELETE(rcv);
 		}
 		return r;
 	}

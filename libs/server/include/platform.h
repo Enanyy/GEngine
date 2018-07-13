@@ -3,10 +3,10 @@
 #define _PLATFORM_H_
 
 #ifndef SAFE_DELETE
-#define SAFE_DELETE(p){if(p){delete p;p = NULL;}}			
+#define SAFE_DELETE(p){if(p){delete p;p = nullptr;}}			
 #endif // !SAFE_DELETE
 #ifndef SAFE_FREE
-#define SAFE_FREE(p)   {if(p){free(p);p = NULL;}}
+#define SAFE_FREE(p)   {if(p){free(p);p = nullptr;}}
 #endif // !SAFE_FREE(p)
 
 #ifdef _MSC_VER

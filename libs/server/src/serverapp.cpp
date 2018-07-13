@@ -111,7 +111,7 @@ bool serverapp::connectserver(const std::string&  ip, const int port, const bool
 }
 void serverapp::on_registerserver_request(const uv_session* session, const int id, const packet*data)
 {
-	if (session == NULL || data == NULL || id != pb::SS_REGISTER_REQUEST)
+	if (session == nullptr || data == nullptr || id != pb::SS_REGISTER_REQUEST)
 	{
 		return;
 	}
@@ -120,7 +120,7 @@ void serverapp::on_registerserver_request(const uv_session* session, const int i
 }
 void serverapp::on_registerserver_return(const uv_session* session, const int id, const packet*data)
 {
-	if (session == NULL || data == NULL || id != pb::SS_REGISTER_RETURN)
+	if (session == nullptr || data == nullptr || id != pb::SS_REGISTER_RETURN)
 	{
 		return;
 	}

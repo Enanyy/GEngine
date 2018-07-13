@@ -24,10 +24,10 @@ namespace network {
 #define PACKET_BUFFER_SIZE (1024*1024)
 #define ADDRESS_BUFFER_SIZE 24
 #ifndef SAFE_DELETE
-#define SAFE_DELETE(p) {if(p){delete p;p = NULL;}}			
+#define SAFE_DELETE(p) {if(p){delete p;p = nullptr;}}			
 #endif // !SAFE_DELETE
 #ifndef SAFE_FREE
-#define SAFE_FREE(p)   {if(p){free(p);p = NULL;}}
+#define SAFE_FREE(p)   {if(p){free(p);p = nullptr;}}
 #endif // !SAFE_FREE(p)
 
 

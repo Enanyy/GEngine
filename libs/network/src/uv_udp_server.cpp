@@ -34,9 +34,9 @@ namespace network {
 
 		m_ipv6 = ipv6;
 
-		if (m_service == NULL)
+		if (m_service == nullptr)
 		{
-			ASSERT(m_service != NULL);
+			ASSERT(m_service != nullptr);
 			return false;
 		}
 
@@ -194,7 +194,7 @@ namespace network {
 
 	void uv_udp_server::on_alloc_buffer(uv_handle_t* handle, size_t suggested_size, uv_buf_t* buf)
 	{
-		assert(handle->data != NULL);
+		ASSERT(handle->data != nullptr);
 		uv_udp_server* client = (uv_udp_server*)handle->data;
 		*buf = client->readbuf();
 	}
@@ -207,7 +207,7 @@ namespace network {
 	}
 	void uv_udp_server::on_receive(uv_udp_t* handle, ssize_t nread, const uv_buf_t* buf, const struct sockaddr* addr, unsigned flags)
 	{
-		if (handle->data == NULL)
+		if (handle->data == nullptr)
 		{
 			return;
 		}

@@ -5,8 +5,8 @@ namespace network {
 	uv_service::uv_service(uv_service_handler* handler) :
 		m_handler(handler),
 		m_loop(uv_default_loop()),
-		m_tcp(NULL),
-		m_udp(NULL),
+		m_tcp(nullptr),
+		m_udp(nullptr),
 		m_connections(),
 		m_sessions(),
 		m_error(),
@@ -20,7 +20,7 @@ namespace network {
 	uv_service::~uv_service()
 	{
 		uv_loop_close(m_loop);
-		m_handler = NULL;
+		m_handler = nullptr;
 		m_shutdown = true;
 		m_init = false;
 
@@ -55,7 +55,7 @@ namespace network {
 		{
 			return true;
 		}
-		if (m_handler == NULL)
+		if (m_handler == nullptr)
 		{
 			return false;
 		}
@@ -85,7 +85,7 @@ namespace network {
 
 	bool uv_service::run() const
 	{
-		if (m_loop == NULL)
+		if (m_loop == nullptr)
 		{
 			return false;
 		}
@@ -133,13 +133,13 @@ namespace network {
 				return it->second;
 			}
 		}
-		return NULL;
+		return nullptr;
 	}
 
 	void uv_service::on_newsession(uv_session* session)
 	{
 		printf("newsession = %d\n", session->id());
-		if (session == NULL)
+		if (session == nullptr)
 		{
 			return;
 		}
@@ -153,7 +153,7 @@ namespace network {
 
 		}
 
-		if (m_handler != NULL)
+		if (m_handler != nullptr)
 		{
 			m_handler->on_newsession(session);
 		}
@@ -190,7 +190,7 @@ namespace network {
 		int r = uv_tcp_init(m_loop, connection->tcp());
 		ASSERT(r == 0);
 
-		struct sockaddr* addr = NULL;
+		struct sockaddr* addr = nullptr;
 		if (ipv6)
 		{
 			struct sockaddr_in addr4;
@@ -240,7 +240,7 @@ namespace network {
 
 	void uv_service::on_connect(uv_connect_t* req, int status)
 	{
-		if (req->data == NULL)
+		if (req->data == nullptr)
 		{
 			return;
 		}
@@ -257,7 +257,7 @@ namespace network {
 
 				[](uv_handle_t* hanle, size_t suggested_size, uv_buf_t* buf) {
 
-					assert(hanle->data != NULL);
+					ASSERT(hanle->data != nullptr);
 
 					uv_session* connection = (uv_session*)hanle->data;
 
@@ -266,14 +266,14 @@ namespace network {
 
 				[](uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
 
-					if (handle->data == NULL)
+					if (handle->data == nullptr)
 					{
 						return;
 					}
 
 					uv_session* connection = (uv_session*)handle->data;
 
-					if (connection == NULL || connection->service() == NULL)
+					if (connection == nullptr || connection->service() == nullptr)
 					{
 						return;
 					}
@@ -332,7 +332,7 @@ namespace network {
 		{
 			return it->second;
 		}
-		return NULL;
+		return nullptr;
 	}
 
 	uv_session* uv_service::getconnection(const std::string&  ip, const int port)
@@ -341,14 +341,14 @@ namespace network {
 		int r = uv_ip6_addr(ip.c_str(), port, &addr6);
 		if (r != 0)
 		{
-			return NULL;
+			return nullptr;
 		}
 		
 		struct sockaddr_in addr4;
 		r = uv_ip4_addr(ip.c_str(), port, &addr4);
 		if (r != 0)
 		{
-			return NULL;
+			return nullptr;
 		}
 
 		auto it = m_connections.begin();
@@ -385,7 +385,7 @@ namespace network {
 			}
 		}
 
-		return NULL;
+		return nullptr;
 	}
 
 	void uv_service::closeconnection(int id)
@@ -408,7 +408,7 @@ namespace network {
 
 	void uv_service::on_newconnection(uv_session* connection)
 	{
-		if (connection == NULL)
+		if (connection == nullptr)
 		{
 			return;
 		}

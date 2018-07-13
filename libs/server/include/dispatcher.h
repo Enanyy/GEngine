@@ -23,7 +23,7 @@ class dispatcher :public nocopyable
 public:
 	bool listen(const int id, ireceiver* receiver )
 	{
-		if (receiver == NULL)
+		if (receiver == nullptr)
 		{
 			return false;
 		}
@@ -52,7 +52,7 @@ public:
 	
 	void unlisten(const int id, ireceiver* receiver)
 	{
-		if (receiver == NULL)
+		if (receiver == nullptr)
 		{
 			return;
 		}
@@ -66,8 +66,7 @@ public:
 				if (r->equals(receiver))
 				{
 					iter = it->second.erase(iter);
-					delete r;
-					r = NULL;
+					SAFE_DELETE(r);
 					break;;
 				}
 			}
@@ -96,8 +95,7 @@ public:
 			for (; iter != it->second.end(); ++iter)
 			{
 				auto r = (*iter);
-				delete r;
-				r = NULL;
+				SAFE_DELETE(r);
 			}
 			it->second.clear();
 		}

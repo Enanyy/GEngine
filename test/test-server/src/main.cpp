@@ -76,8 +76,7 @@ bool testapp::initialize()
 
 	printf("r = %d buf = %s\n", r,buff);
 	
-	delete buff;
-	buff = NULL;
+	SAFE_DELETE(buff);
 
 	std::string strr;
 	r = p.read(strr, str.size());
@@ -99,10 +98,10 @@ bool testapp::initialize()
 
 
 	networkinterface::listen(1, this, &testapp::on_message);
-	networkinterface::dispatch(NULL, 1, &p);
+	networkinterface::dispatch(nullptr, 1, &p);
 
 	networkinterface::unlisten(1, this, &testapp::on_message);
-	networkinterface::dispatch(NULL, 1, &p);
+	networkinterface::dispatch(nullptr, 1, &p);
 
 
 	eventinterface::listen(1, this, &testapp::on_event);

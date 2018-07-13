@@ -9,11 +9,11 @@ class singleton
     public: 
         static T* instance()
         {
-           if(m_instance == NULL)
+           if(m_instance == nullptr)
            {
 			   uv_mutex_init(&m_lock);
 			   uv_mutex_lock(&m_lock);
-               if(m_instance == NULL)
+               if(m_instance == nullptr)
                {
 				   m_instance = new T;
                }
@@ -24,10 +24,10 @@ class singleton
 
         static void destroy()
         {
-            if(m_instance !=NULL)
+            if(m_instance != nullptr)
             {
                 delete m_instance;
-				m_instance = NULL;
+				m_instance = nullptr;
             }
 			uv_mutex_destroy(&m_lock);
         }

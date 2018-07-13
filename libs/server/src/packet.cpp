@@ -21,7 +21,7 @@ packet::packet(int id,const char* body, size_t bodylength,int extra):memorystrea
 {
 	clear();
 
-	time_t t = ::time(NULL);
+	time_t t = ::time(nullptr);
 
 	append<int>(id);				//id
 	append<int>(PACKET_VERSION);	//version
