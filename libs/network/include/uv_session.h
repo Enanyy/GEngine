@@ -8,7 +8,9 @@
 namespace network {
 
 	class uv_service;
+	class uv_session;
 	class uv_packet;
+
 	class uv_session
 	{
 		

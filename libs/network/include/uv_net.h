@@ -2,6 +2,7 @@
 #ifndef _UV_NET_H_
 #define _UV_NET_H_
 
+#include "uv.h"
 #include <stdint.h>
 #include <string>
 #if defined(WIN32) || defined(_WIN32)|| defined(_WIN64) 

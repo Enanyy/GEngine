@@ -1,4 +1,6 @@
 #include "uv_packet.h"
+#include "uv_service.h"
+#include "uv_session.h"
 
 namespace network
 {
@@ -8,7 +10,7 @@ namespace network
 		m_head = uv_buf_init((char*)malloc(PACKET_BUFFER_SIZE), PACKET_BUFFER_SIZE);
 	}
 
-	uv_packet::~uv_packet()
+	 uv_packet::~uv_packet()
 	{
 		SAFE_FREE(m_head.base);
 		SAFE_FREE(m_body.base);
@@ -17,13 +19,6 @@ namespace network
 		m_body.len = 0;
 		m_length = 0;
 	}
-
-	int uv_packet::receive(uv_session* session)
-	{
-		return receive_head(session);
-	}
-
-	
 	int uv_packet::receive_head(uv_session* session)
 	{
 		session->packet().clear();
@@ -32,7 +27,6 @@ namespace network
 
 		return r;
 	}
-
 	int uv_packet::receive_body(uv_session* session)
 	{
 		int r = uv_read_start((uv_stream_t*)session->tcp(), on_alloc_body, on_receive_body);
@@ -54,6 +48,9 @@ namespace network
 		ASSERT(handle->data != nullptr);
 
 		uv_session* session = (uv_session*)handle->data;
+
+		SAFE_FREE(session->packet().body().base);
+		session->packet().body().len = 0;
 
 		if (session->packet().length() == uv_packet::PACKET_HEAD_LENGTH)
 		{
@@ -78,7 +75,24 @@ namespace network
 		if (nread == session->packet().head().len)
 		{
 			session->packet().length(nread);
-			receive_body(session);
+
+			int bodylength = session->packet().bodylength();
+			if (bodylength > 0)
+			{
+				receive_body(session);
+			}
+			else
+			{
+				std::string packet;
+
+				packet.append(session->packet().head().base, session->packet().head().len);
+
+				service->on_tcpreceive(session, packet.c_str(), packet.size());
+
+				session->packet().clear();
+
+				receive_head(session);
+			}
 		}
 		else
 		{
@@ -119,11 +133,12 @@ namespace network
 		}
 		auto service = session->service();
 
-		if (nread == session->packet().bodylength())
+		if (nread > 0 && nread == session->packet().bodylength())
 		{
 			session->packet().length(session->packet().length() + session->packet().bodylength());
 			std::string packet;
 			packet.append(session->packet().head().base, session->packet().head().len);
+			
 			packet.append(session->packet().body().base, session->packet().bodylength());
 
 			service->on_tcpreceive(session, packet.c_str(), packet.size());
@@ -157,4 +172,5 @@ namespace network
 			}
 		}
 	}
+
 }

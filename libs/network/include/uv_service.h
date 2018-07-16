@@ -19,6 +19,7 @@ namespace network {
 	class uv_tcp_server;
 	class uv_udp_server;
 	class uv_tcp_connection;
+	class uv_packet;
 
 	class uv_service
 	{
