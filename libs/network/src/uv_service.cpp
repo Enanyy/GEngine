@@ -159,7 +159,7 @@ namespace network {
 		}
 	}
 
-	void uv_service::on_tcpreceive(uv_session* session, char* data, size_t length)
+	void uv_service::on_tcpreceive(uv_session* session, const char* data, const size_t length)
 	{
 		if (m_handler)
 		{
@@ -167,7 +167,7 @@ namespace network {
 		}
 	}
 
-	void uv_service::on_udpreceive(sockaddr_in* addr, char* data, size_t length)
+	void uv_service::on_udpreceive(sockaddr_in* addr, const char* data, const size_t length)
 	{
 		if (m_handler)
 		{
@@ -253,58 +253,7 @@ namespace network {
 			//连接成功
 			service->on_newconnection(connection);
 
-			int r = uv_read_start((uv_stream_t*)connection->tcp(),
-
-				[](uv_handle_t* hanle, size_t suggested_size, uv_buf_t* buf) {
-
-					ASSERT(hanle->data != nullptr);
-
-					uv_session* connection = (uv_session*)hanle->data;
-
-					*buf = connection->readbuf();
-				},
-
-				[](uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf) {
-
-					if (handle->data == nullptr)
-					{
-						return;
-					}
-
-					uv_session* connection = (uv_session*)handle->data;
-
-					if (connection == nullptr || connection->service() == nullptr)
-					{
-						return;
-					}
-					auto service = connection->service();
-
-					if (nread > 0)
-					{
-						service->on_tcpreceive(connection, buf->base, nread);
-					}
-					else if (nread == 0)
-					{
-						/* Everything OK, but nothing read. */
-					}
-					else
-					{
-						service->closeconnection(connection->id());
-
-						if (nread == UV_EOF) {
-
-							fprintf(stdout, "client %d disconnected, close it.\n", connection->id());
-						}
-						else if (nread == UV_ECONNRESET) {
-							fprintf(stdout, "client %d disconnected unusually, close it.\n", connection->id());
-						}
-						else
-						{
-							ASSERT(nread >= 0);
-						}
-					}
-				});
-
+			int r = connection->receive();
 
 			if (r != 0)
 			{

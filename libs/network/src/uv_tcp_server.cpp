@@ -110,7 +110,7 @@ namespace network {
 
 	}
 
-	bool uv_tcp_server::no_delay(bool enable)
+	bool uv_tcp_server::setnodelay(bool enable)
 	{
 		int r = uv_tcp_nodelay(&m_handle, enable ? 1 : 0);
 		if (r != 0)
@@ -121,7 +121,7 @@ namespace network {
 		return true;
 	}
 
-	bool uv_tcp_server::keep_alive(int enable, unsigned int delay)
+	bool uv_tcp_server::setkeepalive(int enable, unsigned int delay)
 	{
 		int r = uv_tcp_keepalive(&m_handle, enable, delay);
 		if (r != 0)
@@ -220,67 +220,20 @@ namespace network {
 
 		server->service()->on_newsession(session);
 
-		r = uv_read_start((uv_stream_t*)session->tcp(), on_alloc_buffer, on_receive);
+		r = session->receive();
 
 		ASSERT(r == 0);
 
 	}
-	void  uv_tcp_server::on_receive(uv_stream_t* handle, ssize_t nread, const uv_buf_t* buf)
-	{
-		if (handle->data == nullptr)
-		{
-			return;
-		}
 
-		uv_session* session = (uv_session*)handle->data;
-
-		if (session == nullptr || session->service() == nullptr)
-		{
-			return;
-		}
-		auto service = session->service();
-
-		if (nread > 0)
-		{
-			service->on_tcpreceive(session, buf->base, nread);
-		}
-		else if (nread == 0)
-		{
-			/* Everything OK, but nothing read. */
-		}
-		else
-		{
-			service->closesession(session->id());
-
-			if (nread == UV_EOF) {
-
-				fprintf(stdout, "client %d disconnected, close it.\n", session->id());
-			}
-			else if (nread == UV_ECONNRESET) {
-				fprintf(stdout, "client %d disconnected unusually, close it.\n", session->id());
-			}
-			else
-			{
-				ASSERT(nread >= 0);
-			}
-		}
-
-	}
+	
 
 	void  uv_tcp_server::on_send(uv_write_t* req, int status)
 	{
 		ASSERT(status != 0);
 	}
 
-	void  uv_tcp_server::on_alloc_buffer(uv_handle_t* hanle, size_t suggested_size, uv_buf_t* buf)
-	{
-		ASSERT(hanle->data != nullptr);
-
-		uv_session* session = (uv_session*)hanle->data;
-
-		*buf = session->readbuf();
-	}
-
+	
 	void  uv_tcp_server::on_close(uv_handle_t* handle)
 	{
 		SAFE_FREE(handle);

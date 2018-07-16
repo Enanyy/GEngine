@@ -1,12 +1,13 @@
 #include "uv_session.h"
-#include "uv_net.h"
+
 namespace network {
 
 	uv_session::uv_session(uv_service* service, bool ipv6) :
 		m_service(service),
 		m_tcp(),
 		m_id(service->generateid()),
-		m_ipv6(ipv6)
+		m_ipv6(ipv6),
+		m_packet()
 	{
 		
 		m_tcp.data = this;
@@ -38,7 +39,7 @@ namespace network {
 		return uv_tcp_get_port(&m_tcp, m_ipv6);
 	}
 
-	bool uv_session::no_delay(bool enable)
+	bool uv_session::setnodelay(bool enable)
 	{
 		int r = uv_tcp_nodelay(&m_tcp, enable ? 1 : 0);
 		if (r != 0)
@@ -49,7 +50,7 @@ namespace network {
 		return true;
 	}
 
-	bool uv_session::keep_alive(int enable, unsigned int delay)
+	bool uv_session::setkeepalive(int enable, unsigned int delay)
 	{
 		int r = uv_tcp_keepalive(&m_tcp, enable, delay);
 		if (r != 0)
@@ -77,5 +78,10 @@ namespace network {
 	{
 		SAFE_FREE(handle);
 		
+	}
+
+	int uv_session::receive()
+	{
+		return m_packet.receive(this);
 	}
 }

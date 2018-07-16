@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\uv_net.h" />
+    <ClInclude Include="include\uv_packet.h" />
     <ClInclude Include="include\uv_service.h" />
     <ClInclude Include="include\uv_service_handler.h" />
     <ClInclude Include="include\uv_session.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="include\uv_udp_server.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\uv_packet.cpp" />
     <ClCompile Include="src\uv_service.cpp" />
     <ClCompile Include="src\uv_session.cpp" />
     <ClCompile Include="src\uv_tcp_server.cpp" />

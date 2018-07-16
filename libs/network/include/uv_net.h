@@ -21,7 +21,6 @@
 #endif
 namespace network {
 
-#define PACKET_BUFFER_SIZE (1024*1024)
 #define ADDRESS_BUFFER_SIZE 24
 #ifndef SAFE_DELETE
 #define SAFE_DELETE(p) {if(p){delete p;p = nullptr;}}			

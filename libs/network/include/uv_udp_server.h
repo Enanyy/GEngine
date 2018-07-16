@@ -31,7 +31,7 @@ namespace network {
 		uv_udp_send_t& sendreq() { return m_sendreq; }
 		const bool				is_active();
 
-		bool set_broadcast(bool enable);
+		bool setbroadcast(bool enable);
 
 	protected:
 

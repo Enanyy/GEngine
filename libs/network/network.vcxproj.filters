@@ -33,6 +33,9 @@
     <ClInclude Include="include\uv_session.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\uv_packet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\uv_service.cpp">
@@ -45,6 +48,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\uv_session.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\uv_packet.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -67,7 +67,7 @@ namespace network {
 		return true;
 	}
 
-	bool uv_udp_server::set_broadcast(bool enable)
+	bool uv_udp_server::setbroadcast(bool enable)
 	{
 		int r = uv_udp_set_broadcast(&m_handle, enable ? 1 : 0);
 		if (r != 0)

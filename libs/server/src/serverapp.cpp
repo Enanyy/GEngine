@@ -30,7 +30,7 @@ void serverapp::on_closesession(uv_session* session)
 
 }
 
-void serverapp::on_tcpreceive(uv_session* session, char* data, size_t length)
+void serverapp::on_tcpreceive(uv_session* session, const char* data, const size_t length)
 {
 	packet pack(data, length);
 
@@ -44,7 +44,7 @@ void serverapp::on_tcpreceive(uv_session* session, char* data, size_t length)
 	networkinterface::dispatch(session, pack.id(), &pack);
 }
 
-void serverapp::on_udpreceive(sockaddr_in* addr, char* data, size_t length)
+void serverapp::on_udpreceive(sockaddr_in* addr, const char* data, const size_t length)
 {
 
 }

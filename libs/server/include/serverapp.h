@@ -37,11 +37,11 @@ protected:
 	/*
 	通过tcp收到的包，包括客户端与服务器和服务器之间的消息
 	*/
-	virtual void on_tcpreceive(uv_session* session, char* data, size_t length);
+	virtual void on_tcpreceive(uv_session* session, const char* data, const size_t length);
 	/*
 	通过udp收到的包
 	*/
-	virtual void on_udpreceive(sockaddr_in* addr, char* data, size_t length);
+	virtual void on_udpreceive(sockaddr_in* addr, const char* data, const size_t length);
 
 	/*
 	请求连接别的服务器成功的回调

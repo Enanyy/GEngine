@@ -10,6 +10,7 @@
 #include "uv_tcp_server.h"
 #include "uv_udp_server.h"
 #include "uv_service_handler.h"
+#include "uv_packet.h"
 
 namespace network {
 
@@ -25,6 +26,7 @@ namespace network {
 		friend class uv_udp_server;
 		friend class uv_session;
 		friend class uv_tcp_connection;
+		friend class uv_packet;
 
 	public:
 		uv_service(uv_service_handler* handler);
@@ -56,8 +58,8 @@ namespace network {
 
 	private:
 		void on_newsession(uv_session* session);
-		void on_tcpreceive(uv_session* session, char* data, size_t length);
-		void on_udpreceive(sockaddr_in* addr, char* data, size_t length);
+		void on_tcpreceive(uv_session* session,const char* data, const size_t length);
+		void on_udpreceive(sockaddr_in* addr, const char* data, const size_t length);
 
 		void on_newconnection(uv_session* session);
 

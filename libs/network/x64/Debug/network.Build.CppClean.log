@@ -1,14 +1,6 @@
 h:\workspace\gengine\libs\network\x64\debug\network.pdb
 h:\workspace\gengine\libs\network\x64\debug\network.idb
-h:\workspace\gengine\libs\network\x64\debug\uv_service.obj
 h:\workspace\gengine\libs\network\x64\debug\uv_session.obj
-h:\workspace\gengine\libs\network\x64\debug\uv_tcp_server.obj
-h:\workspace\gengine\libs\network\x64\debug\uv_udp_server.obj
-h:\workspace\gengine\x64\debug\lib\network.lib
-h:\workspace\gengine\x64\debug\network.pdb
 h:\workspace\gengine\libs\network\x64\debug\network.tlog\cl.command.1.tlog
 h:\workspace\gengine\libs\network\x64\debug\network.tlog\cl.read.1.tlog
 h:\workspace\gengine\libs\network\x64\debug\network.tlog\cl.write.1.tlog
-h:\workspace\gengine\libs\network\x64\debug\network.tlog\lib-link.read.1.tlog
-h:\workspace\gengine\libs\network\x64\debug\network.tlog\lib-link.write.1.tlog
-h:\workspace\gengine\libs\network\x64\debug\network.tlog\lib.command.1.tlog
