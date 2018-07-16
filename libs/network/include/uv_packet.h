@@ -24,11 +24,8 @@ namespace network {
 		virtual ~uv_packet();
 	
 
-		void  clear()
-		{
-			memset(m_head.base, 0, m_head.len);
-			memset(m_body.base, 0, m_body.len);
-		}
+		void  clear();
+		
 
 		/*
 		recv data length

@@ -10,7 +10,7 @@ namespace network
 		m_head = uv_buf_init((char*)malloc(PACKET_BUFFER_SIZE), PACKET_BUFFER_SIZE);
 	}
 
-	 uv_packet::~uv_packet()
+	uv_packet::~uv_packet()
 	{
 		SAFE_FREE(m_head.base);
 		SAFE_FREE(m_body.base);
@@ -19,6 +19,17 @@ namespace network
 		m_body.len = 0;
 		m_length = 0;
 	}
+
+	void uv_packet::clear()
+	{
+		if (m_head.base != nullptr) {
+			memset(m_head.base, 0, m_head.len);
+		}
+		if (m_body.base != nullptr) {
+			memset(m_body.base, 0, m_body.len);
+		}
+	}
+
 	int uv_packet::receive_head(uv_session* session)
 	{
 		session->packet().clear();
@@ -57,7 +68,7 @@ namespace network
 			size_t bodylength = session->packet().bodylength();
 			if (bodylength > 0)
 			{
-				session->packet().body().base = (char*)realloc(session->packet().body().base, bodylength);
+				session->packet().body().base = (char*)malloc(bodylength);
 				session->packet().body().len = bodylength;
 
 				*buf = session->packet().body();
@@ -138,7 +149,7 @@ namespace network
 			session->packet().length(session->packet().length() + session->packet().bodylength());
 			std::string packet;
 			packet.append(session->packet().head().base, session->packet().head().len);
-			
+
 			packet.append(session->packet().body().base, session->packet().bodylength());
 
 			service->on_tcpreceive(session, packet.c_str(), packet.size());
@@ -172,5 +183,4 @@ namespace network
 			}
 		}
 	}
-
 }
