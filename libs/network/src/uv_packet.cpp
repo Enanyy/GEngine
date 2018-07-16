@@ -60,18 +60,20 @@ namespace network
 
 		uv_session* session = (uv_session*)handle->data;
 
-		SAFE_FREE(session->packet().body().base);
-		session->packet().body().len = 0;
+		uv_buf_t&  bodybuf = session->packet().body();
+
+		SAFE_FREE(bodybuf.base);
+		bodybuf.len = 0;
 
 		if (session->packet().length() == uv_packet::PACKET_HEAD_LENGTH)
 		{
 			size_t bodylength = session->packet().bodylength();
 			if (bodylength > 0)
 			{
-				session->packet().body().base = (char*)malloc(bodylength);
-				session->packet().body().len = bodylength;
+				bodybuf.base = (char*)malloc(bodylength);
+				bodybuf.len = bodylength;
 
-				*buf = session->packet().body();
+				*buf = bodybuf;
 			}
 		}
 	}
