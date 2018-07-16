@@ -77,7 +77,7 @@ size_t  packet::bodylength()
 	return memorystream::read<unsigned int>(PACKET_BODY_LENGTH_OFFSET);
 }
 
-size_t  packet::time()
+time_t  packet::time()
 {
 	if (length() <= PACKET_TIMESTAMP_OFFSET)
 	{
@@ -86,15 +86,15 @@ size_t  packet::time()
 	return memorystream::read<time_t>(PACKET_TIMESTAMP_OFFSET);
 }
 
-size_t	packet::version()
+int	packet::version()
 {
 	if (length() <= PACKET_VERSION_OFFSET)
 	{
 		return 0;
 	}
-	return memorystream::read<unsigned int>(PACKET_VERSION_OFFSET);
+	return memorystream::read<int>(PACKET_VERSION_OFFSET);
 }
-size_t	packet::extra()
+int	packet::extra()
 {
 
 	if (length() <= PACKET_EXTRA_OFFSET)
