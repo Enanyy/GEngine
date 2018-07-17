@@ -82,34 +82,35 @@ namespace network
 	{
 		ASSERT(handle->data != nullptr);
 
-		uv_session* session = (uv_session*)handle->data;
-		auto service = session->service();
+		uv_session* session		= (uv_session*)handle->data;
+		uv_service* service		= session->service();
+		uv_packet& packet		= session->packet();
 
-		if (nread == session->packet().head().len)
+		if (nread == packet.head().len)
 		{
-			session->packet().length(nread);
+			packet.length(nread);
 
-			int bodylength = session->packet().bodylength();
+			int bodylength = packet.bodylength();
 			if (bodylength > 0)
 			{
 				receive_body(session);
 			}
 			else
 			{
-				std::string packet;
+				std::string data;
 
-				packet.append(session->packet().head().base, session->packet().head().len);
+				data.append(packet.head().base, packet.head().len);
 
-				service->on_tcpreceive(session, packet.c_str(), packet.size());
+				service->on_tcpreceive(session, data.c_str(), data.size());
 
-				session->packet().clear();
+				packet.clear();
 
 				receive_head(session);
 			}
 		}
 		else
 		{
-			session->packet().clear();
+			packet.clear();
 
 			if (nread < 0)
 			{
@@ -138,32 +139,31 @@ namespace network
 			return;
 		}
 
-		uv_session* session = (uv_session*)handle->data;
-
-		if (session == nullptr || session->service() == nullptr)
-		{
-			return;
-		}
-		auto service = session->service();
+		uv_session* session		= (uv_session*)handle->data;
+		uv_service* service		= session->service();
+		uv_packet& packet		= session->packet();
 
 		if (nread > 0 && nread == session->packet().bodylength())
 		{
-			session->packet().length(session->packet().length() + session->packet().bodylength());
-			std::string packet;
-			packet.append(session->packet().head().base, session->packet().head().len);
 
-			packet.append(session->packet().body().base, session->packet().bodylength());
+			packet.length(packet.length() + packet.bodylength());
+			
+			std::string data;
 
-			service->on_tcpreceive(session, packet.c_str(), packet.size());
+			data.append(packet.head().base, packet.head().len);
 
-			session->packet().clear();
+			data.append(packet.body().base, packet.bodylength());
+
+			service->on_tcpreceive(session, data.c_str(), data.size());
+
+			packet.clear();
 
 			receive_head(session);
 		}
 
 		else
 		{
-			session->packet().clear();
+			packet.clear();
 
 			if (nread < 0)
 			{
